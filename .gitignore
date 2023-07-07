@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+*Rproj
+
+/.quarto/
+
+_publish.yml 
