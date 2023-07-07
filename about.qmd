@@ -2,8 +2,6 @@
 title: "About"
 ---
 
-About this site
+Hi, My name is [Emmanuel Yeboah.](https://github.com/kwakuemma1) You can reach my at `emmayeboah2007@gmail.com`.
 
-```{r}
-1 + 1
-```
+This project was created as a part of [Kane's Data Science Bootcamp](https://bootcamp.davidkane.info/) 
