@@ -1,3 +1,13 @@
 ---
 title: "Sources"
 ---
+
+## The Dataset I used For this Project:
+  - [mrbalikci:endangered-languages](https://github.com/mrbalikci/endangered-languages/tree/master)
+
+## The Resources I used for this Project:
+  - [The Quarto Guide](https://quarto.org/docs/guide/)
+  - [Briggs, Saga. “Endangered Languages: What Are They & How to Save Them.”](https://www.berlitz.com/blog/endangered-languages)
+  - [Endangered Languages Project](https://www.endangeredlanguages.com/#/3/28.506/-95.790/0/100000/0/low/mid/high/dormant)
+  - [Kaggle](https://www.kaggle.com/code/xhoong/languages-extinction-level-to-representing-country/report)
+ 

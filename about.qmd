@@ -2,6 +2,11 @@
 title: "About" 
 ---
 
-Hi, My name is [Emmanuel Yeboah.](https://github.com/kwakuemma1) You can reach my at `emmayeboah2007@gmail.com`.
+## About Me
+Hi, My name is [Emmanuel Yeboah.](https://github.com/kwakuemma1) I'm a rising Junior at McKinney Boyd High School
+I enjoy modern technological devices, playing badminton (or tennis), and plotting interactive graphs in RStudios. 
 
-This project was created as a part of [Kane's Data Science Bootcamp](https://bootcamp.davidkane.info/) 
+You can reach my at `emmayeboah2007@gmail.com`.
+
+## About this Project
+This project was created as a part of [Kane's Data Science Bootcamp](https://bootcamp.davidkane.info/) a 6-week course that teaches you the basics of **Data Science.**

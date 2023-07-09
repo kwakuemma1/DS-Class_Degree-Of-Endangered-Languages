@@ -4,6 +4,62 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Hi, My name is Emmanuel Yeboah. You can reach my at emmayeboah2007@gmail.com.\nThis project was created as a part of Kane’s Data Science Bootcamp"
+    "text": "Hi, My name is Emmanuel Yeboah. I’m a rising Junior at McKinney Boyd High School I enjoy modern technological devices, playing badminton (or tennis), and plotting interactive graphs in RStudios.\nYou can reach my at emmayeboah2007@gmail.com."
+  },
+  {
+    "objectID": "about.html#about-this-project",
+    "href": "about.html#about-this-project",
+    "title": "About",
+    "section": "About this Project",
+    "text": "About this Project\nThis project was created as a part of Kane’s Data Science Bootcamp a 6-week course that teaches you the basics of Data Science."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "**Degree Of Endangered Languages Around the World**",
+    "section": "",
+    "text": "According to the World Economic Forum there are approximately 7,000 known living languages. One-third of these languages are African and most of the world speaks one of 20 languages. Two-fifths of the world’s languages are positioned to die out.\nNot all endangered languages are at equal risk of dying out. Here is UNESCO’s classification system which shows how vulnerable a language is:\n\n\n\n\n\n\n\nClassification\nExplanation\n\n\n\n\nVulnerable\nMost children speak the language, but it may be restricted to certain domains (e.g., home).\n\n\nDefinitely Endangered\nChildren no longer learn the language as a ‘mother tongue’ in the home.\n\n\nSeverely Endangered\nLanguage is spoken by grandparents and older generations; while the parent generation may understand it, they do not speak it to children or among themselves.\n\n\nCritically Endangered\nThe youngest speakers are grandparents and older, and they speak the language partially and infrequently.\n\n\nExtinct\nThere are no speakers left."
+  },
+  {
+    "objectID": "sources.html",
+    "href": "sources.html",
+    "title": "Sources",
+    "section": "",
+    "text": "mrbalikci:endangered-languages"
+  },
+  {
+    "objectID": "sources.html#the-resources-i-used-for-this-project",
+    "href": "sources.html#the-resources-i-used-for-this-project",
+    "title": "Sources",
+    "section": "The Resources I used for this Project:",
+    "text": "The Resources I used for this Project:\n\nThe Quarto Guide\nBriggs, Saga. “Endangered Languages: What Are They & How to Save Them.”\nEndangered Languages Project\nKaggle"
+  },
+  {
+    "objectID": "index.html#global-map-plot",
+    "href": "index.html#global-map-plot",
+    "title": "**Degree Of Endangered Languages Around the World**",
+    "section": "Global Map Plot",
+    "text": "Global Map Plot"
+  },
+  {
+    "objectID": "index.html#global-map-sphere",
+    "href": "index.html#global-map-sphere",
+    "title": "**Degree Of Endangered Languages Around the World**",
+    "section": "Global Map Sphere",
+    "text": "Global Map Sphere\nThe map below shows most countries scale on which level of endangered language their in based on the UNESCO’s classification system. 1 meaning on average it has vulnerable languages all the way to 5 meaning on average it has extinct languages."
+  },
+  {
+    "objectID": "index.html#world-map-of-clssification-of-endangered-langueages",
+    "href": "index.html#world-map-of-clssification-of-endangered-langueages",
+    "title": "**Degree Of Endangered Languages Around the World**",
+    "section": "World Map of Clssification Of Endangered Langueages",
+    "text": "World Map of Clssification Of Endangered Langueages"
+  },
+  {
+    "objectID": "index.html#world-map-of-the-clssification-of-endangered-langueages",
+    "href": "index.html#world-map-of-the-clssification-of-endangered-langueages",
+    "title": "**Degree Of Endangered Languages Around the World**",
+    "section": "World Map of the Clssification of Endangered Langueages",
+    "text": "World Map of the Clssification of Endangered Langueages"
   }
 ]

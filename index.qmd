@@ -1,9 +1,166 @@
 ---
-title: " "
+title: "Endangered Languages"
+format: html
+execute: 
+  echo: false
 ---
 
 
-## To Be filled
-```{r}
+## How many are Languages are Endangered? 
 
+According to the World Economic Forum there are approximately 7,000 known living languages. One-third of these languages are African and most of the world speaks one of 20 languages. Two-fifths of the world’s languages are positioned to die out.
+
+Not all endangered languages are at equal risk of dying out. Here is UNESCO’s classification system which shows how vulnerable a language is:
+
+| Classification | Explanation |
+|----------------|-------------|
+| Vulnerable     | Most children speak the language, but it may be restricted to certain domains                           (e.g., home). |
+| Definitely Endangered | Children no longer learn the language as a 'mother tongue' in the home. |                
+| Severely Endangered | Language is spoken by grandparents and older generations; while the parent                               generation may understand it, they do not speak it to children or among                                  themselves. |         
+| Critically Endangered | The youngest speakers are grandparents and older, and they speak the language                            partially and infrequently. |            
+| Extinct        | There are no speakers left. |
+
+
+## Global Map Sphere 
+
+The map below shows most countries scale on which level of endangered language their in based on the UNESCO’s classification system. 1 meaning on average it has vulnerable
+languages all the way to 5 meaning on average it has extinct languages.  
+
+
+```{r}
+#| label: globe data
+#| message: false
+# Packages
+
+# Data Manipulation
+library(tidyverse) # For data manipulation
+library(janitor)   # For clean column names, and other utilities
+library(glue)      # String manipulation
+
+# Interactive Maps
+library(htmltools)
+library(plotly)    # For interactive plots
+library(leaflet)   # For interactive maps
+
+# Map packages
+library(sf)        # For map shape files
+library(tigris)   
+library(rnaturalearth)
+library(ggspatial)
+
+# Plotting packages
+library(scales)
+library(patchwork) 
+library(RColorBrewer)
+require(plotly)
+
+# source('data_01_clean_languages_final.R')
+# Below are the output if you run the line above
+combined_data <- readRDS("combined_data.Rds")
+country_doe_orig <- readRDS("country_doe_orig.Rds")
+country_doe <- readRDS("country_doe.Rds")
+covariates <- readRDS("covariates.Rds")
+getMapGepProp <- readRDS("getMapGepProp.Rds")
 ```
+
+
+
+```{r}
+#| label: globe plot
+#| message: false
+#| column: screen
+
+plot_geo(locations=country_doe_orig$country_codes,
+         marker = list(colorbar = list(title = 'Country Median DoE')),
+         colorscale="YlOrRd",
+         text=paste(country_doe_orig$country_name, country_doe_orig$language_count, sep = "-"),
+         z=country_doe_orig$degree_of_endangerment_median) |>
+  layout(
+    showlegend = T, geo = getMapGepProp(),
+    title = 'World Language Degree of Endangerment Scale by Country'
+  )
+```
+
+
+## World Map of the Classification of Endangered Langueages 
+
+The map below shows the classification of endangerment of languages in each country that are know of so far.
+
+```{r}
+#| label: flat map data
+#| message: false
+# source('data_01_clean_flat_map_data.R')
+# Below are the output if you run the line above
+map_data <- readRDS("map_data.Rds")
+```
+
+
+
+```{r}
+#| label: flat map plot
+#| column: screen
+#| message: false
+
+color_pal <- colorFactor(
+  palette = c(
+    'green',
+    'orange',
+    '#D73377',
+    '#4A0D67', 
+    'red',
+    '#6F0C17',
+    'black',
+    '#002642',
+    'grey'
+    
+  ),
+  domain = map_data$endangerment_degree
+)
+
+
+interactive_map <- leaflet() |>
+  addTiles()
+
+interactive_map <- interactive_map |> 
+  addCircleMarkers(
+    data = map_data,  # Use your data frame
+    lng = ~longitude,  # Column name for longitude
+    lat = ~latitude,  # Column name for latitude
+    color = ~color_pal(endangerment_degree),  # Column name for the categorical variable
+    radius = ~confidence_in_degree,  # Size of the markers
+    stroke = FALSE,  # Remove stroke around markers
+    fillOpacity = 0.7,  # Opacity of the markers
+    label = ~name_in_the_language #endangerment_degree  # Display the category label on hover
+  )
+
+
+
+tag.map.title <- tags$style(HTML("
+  .leaflet-control.map-title { 
+    transform: translate(-50%,20%);
+    position: fixed !important;
+    left: 50%;
+    text-align: center;
+    padding-left: 10px; 
+    padding-right: 10px; 
+    background: rgba(255,255,255,0.75);
+    font-weight: bold;
+    font-size: 28px;
+  }
+"))
+
+title <- tags$div(
+  tag.map.title, HTML("Classification of Endangered Languages across the World.<br>Size of radius represent degree of belief in classification")
+)  
+
+
+
+interactive_map |>
+  addLegend(data = map_data,
+            "topright", pal = color_pal, values = ~endangerment_degree,
+            title = "Degree of Endangerment",
+            opacity = 1
+  ) |>
+  addControl(title, position = "topleft", className="map-title")
+```
+
