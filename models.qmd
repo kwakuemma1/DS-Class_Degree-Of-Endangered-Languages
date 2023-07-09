@@ -1,4 +1,173 @@
 ---
 title: "Models Used"
 editor: visual
+execute: 
+  echo: false
 ---
+
+## Introduction
+
+dfdgdfg
+
+## Load Relevant Packages
+
+```{r, warning=FALSE}
+#| message: false
+library(tidyverse) # for data manipulation
+library(rstanarm) # for stan_glm stan_polr models
+library(broom.mixed)  # to print model results
+library(broom)  # to print out model results
+library(tidybayes)  # to sample from Bayesian model. Or to use your model for simulations
+```
+
+
+## Load Data
+```{r}
+#| message: false
+# source('data_01_clean_languages_final.R')
+# Below are the output if you run the line above
+combined_data <- readRDS("combined_data.Rds")
+```
+
+
+
+## Build Models
+
+fsdfsfsdfgfdf
+
+```{r}
+#| message: false
+covariates <- c(
+  'literacy',
+  'infant_mortality',
+  'agriculture',
+  'proximity_to_capital_city',
+  'minority_ed_policy',
+  'urban_pop_pc_change_1960_2017'
+)
+```
+
+
+### Model A: Predict Numeric Degree of Endangerment
+
+$$
+\begin{aligned}
+\operatorname{degree\_of\_endangerment\_numeric} &= \alpha + \beta_{1}(\operatorname{literacy})\\
+&\quad + \beta_{2}(\operatorname{infant\_mortality}) + \beta_{3}(\operatorname{agriculture})\\
+&\quad + \beta_{4}(\operatorname{proximity\_to\_capital\_city}) + \beta_{5}(\operatorname{minority\_ed\_policy})\\
+&\quad + \beta_{6}(\operatorname{urban\_pop\_pc\_change\_1960\_2017}) + \epsilon
+\end{aligned}
+$$
+
+
+
+```{r}
+#| message: false
+model_numeric <- readRDS("model_numeric.Rds")
+model_numeric
+```
+
+
+
+```{r}
+#| message: false
+broom.mixed::tidy(model_numeric)
+```
+
+$$
+\begin{aligned}
+\operatorname{\widehat{degree\_of\_endangerment\_numeric}} &= 0.595 + 0.689(\operatorname{literacy})\\
+&\quad + 0.025(\operatorname{infant\_mortality}) - 2.292(\operatorname{agriculture})\\
+&\quad + 0.388(\operatorname{proximity\_to\_capital\_city}) + 0.446(\operatorname{minority\_ed\_policy})\\
+&\quad + 0.023(\operatorname{urban\_pop\_pc\_change\_1960\_2017})
+\end{aligned}
+$$
+
+
+
+
+```{r}
+#| message: false
+plot(model_numeric, "areas", regex_pars = c('literacy', 'agriculture'),
+     prob = 0.5, prob_outer = 0.9)
+```
+
+
+```{r}
+#| message: false
+plot(model_numeric, "areas", regex_pars = c('infant_mortality','net_migration'),
+     prob = 0.5, prob_outer = 0.9)
+```
+
+
+### Model B: Predict Probability of Degree of Endangerment
+
+$$
+\begin{aligned}
+\operatorname{\phi} &= \beta_{1}(\operatorname{literacy})\\
+&\quad + \beta_{2}(\operatorname{infant\_mortality}) + \beta_{3}(\operatorname{agriculture})\\
+&\quad + \beta_{4}(\operatorname{proximity\_to\_capital\_city}) + \beta_{5}(\operatorname{minority\_ed\_policy})\\
+&\quad + \beta_{6}(\operatorname{urban\_pop\_pc\_change\_1960\_2017})
+\end{aligned}
+$$
+
+
+$$
+\begin{aligned}
+\log\left[ \frac { P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) }{ 1 - P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) } \right] &= \alpha_{1} - \phi + \epsilon \\
+\log\left[ \frac { P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) }{ 1 - P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) } \right] &= \alpha_{2} - \phi + \epsilon \\
+\log\left[ \frac { P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) }{ 1 - P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) } \right] &= \alpha_{3} - \phi  + \epsilon \\
+\log\left[ \frac { P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) }{ 1 - P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) } \right] &= \alpha_{4} - \phi + \epsilon
+\end{aligned}
+$$
+
+
+
+
+```{r}
+#| message: false
+model_formula_factor <- readRDS("model_factor.Rds")
+
+model_formula_factor
+```
+
+
+```{r}
+#| message: false
+broom.mixed::tidy(model_factor)
+```
+
+$$
+\begin{aligned}
+\operatorname{\hat{\phi}} &=0.805(\operatorname{literacy})\\
+&\quad + 0.307(\operatorname{infant\_mortality}) - 3.176(\operatorname{agriculture})\\
+&\quad + 0.433(\operatorname{proximity\_to\_capital\_city}) + 0.681(\operatorname{minority\_ed\_policy})\\
+&\quad + 0.031(\operatorname{urban\_pop\_pc\_change\_1960\_2017})
+\end{aligned}
+$$
+
+
+$$
+\begin{aligned}
+\log\left[ \frac { P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) }{ 1 - P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) } \right] &= 1.013 - \hat{\phi}\\
+\log\left[ \frac { P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) }{ 1 - P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) } \right] &= 2.542 - \hat{\phi} \\
+\log\left[ \frac { P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) }{ 1 - P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) } \right] &= 4.039 - \hat{\phi} \\
+\log\left[ \frac { P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) }{ 1 - P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) } \right] &= 6.065 - \hat{\phi}
+\end{aligned}
+$$
+
+
+
+
+```{r}
+#| message: false
+plot(model_factor, "areas", regex_pars = c('literacy', 'agriculture'),
+     prob = 0.5, prob_outer = 0.9)
+```
+
+
+```{r}
+#| message: false
+plot(model_factor, "areas", regex_pars = c('infant_mortality','net_migration'),
+     prob = 0.5, prob_outer = 0.9)
+```
