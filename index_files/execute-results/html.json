@@ -1,0 +1,14 @@
+{
+  "hash": "89eb3d17efcaadd285615649999207e8",
+  "result": {
+    "markdown": "---\ntitle: \" \"\nexecute: \n  echo: false\n---\n\n\n\n## How many are Languages are Endangered? \n\nAccording to the World Economic Forum there are approximately 7,000 known living languages. One-third of these languages are African and most of the world speaks one of 20 languages. Two-fifths of the world’s languages are positioned to die out.\n\nNot all endangered languages are at equal risk of dying out. Here is UNESCO’s classification system which shows how vulnerable a language is:\n\n| Classification | Explanation |\n|----------------|-------------|\n| Vulnerable     | Most children speak the language, but it may be restricted to certain domains                           (e.g., home). |\n| Definitely Endangered | Children no longer learn the language as a 'mother tongue' in the home. |                \n| Severely Endangered | Language is spoken by grandparents and older generations; while the parent                               generation may understand it, they do not speak it to children or among                                  themselves. |         \n| Critically Endangered | The youngest speakers are grandparents and older, and they speak the language                            partially and infrequently. |            \n| Extinct        | There are no speakers left. |\n\n\n## Global Map Sphere \n\nThe map below shows most countries scale on which level of endangered language their in based on the UNESCO’s classification system. 1 meaning on average it has vulnerable\nlanguages all the way to 5 meaning on average it has extinct languages.  \n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n\n\n\n## World Map of the Clssification of Endangered Langueages \n\n\n\n\n\n\n\n\n\n\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
