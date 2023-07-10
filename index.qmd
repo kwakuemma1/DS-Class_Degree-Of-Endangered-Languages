@@ -8,17 +8,17 @@ execute:
 
 ## How many are Languages are Endangered? 
 
-According to the World Economic Forum there are approximately 7,000 known living languages. One-third of these languages are African and most of the world speaks one of 20 languages. Two-fifths of the world’s languages are positioned to die out.
+The World Economic Forum reports that there are around 7,000 recognized languages in existence, with African languages comprising one-third of this total. Interestingly, the majority of people worldwide communicate in just 20 languages. Additionally, a concerning statistic reveals that 40% of the world's languages are in danger of disappearing completely.
 
-Not all endangered languages are at equal risk of dying out. Here is UNESCO’s classification system which shows how vulnerable a language is:
+However, it's important to note that not all endangered languages face an equal risk of extinction. UNESCO has devised a classification system that assesses the vulnerability of languages, providing insights into their level of endangerment.
 
 | Classification | Explanation |
 |----------------|-------------|
-| Vulnerable     | Most children speak the language, but it may be restricted to certain domains                           (e.g., home). |
-| Definitely Endangered | Children no longer learn the language as a 'mother tongue' in the home. |                
-| Severely Endangered | Language is spoken by grandparents and older generations; while the parent                               generation may understand it, they do not speak it to children or among                                  themselves. |         
-| Critically Endangered | The youngest speakers are grandparents and older, and they speak the language                            partially and infrequently. |            
-| Extinct        | There are no speakers left. |
+| Vulnerable     |The language is commonly spoken by children, but its usage might be limited to specific areas or contexts. (ex: home, etc) |
+| Definitely Endangered | Children no longer acquire the language as their first language within their family environment. |                
+| Severely Endangered | The language is spoken by grandparents and older generations, and although parents may comprehend it, they do not actively use it when communicating with their children or among themselves. |         
+| Critically Endangered | The language is spoken partially and infrequently by the youngest speakers, who are typically grandparents or older individuals. |            
+| Extinct        | There are no remaining individuals who can speak the language.|
 
 
 ## Global Map Sphere 
