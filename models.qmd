@@ -6,8 +6,8 @@ execute:
 ---
 
 ## Introduction
+The models used for this project were the Bayesian model and Ordinal model. The Bayesian model (stan_glm) was used for predicting how likely the covariates (literacy, infant mortality, and agriculture) would have an impact on the degree of endangerment. And the ordinal model (stan_plor) was used for predicting the probability of endangerment of each of the degrees of endangerment.  
 
-dfdgdfg
 
 ## Load Relevant Packages
 
@@ -33,7 +33,7 @@ combined_data <- readRDS("combined_data.Rds")
 
 ## Build Models
 
-fsdfsfsdfgfdf
+Below are the results after running the Bayesian model and Ordinal model as well as their mathematical representation/formula. 
 
 ```{r}
 #| message: false
