@@ -7,10 +7,12 @@ execute:
 
 
 ## How many are Languages are Endangered? 
+(overview of what you did...)
+Reported by the World Economic Forum there are approximately 7,000 recognized languages worldwide, 
+African languages make up one-third of the total, while the majority of people globally communicate 
+in only 20 languages. The following data was pulled from data sets from mrbalikci github endangered-languages. Mapping data was then used to visualize most countries scale on which level of endangered language their in as well as the classification of endangerment of languages in each country that are know of so far. I then estimated a Bayesian linear model with degree of endangerment as the dependent variable and literacy, infant mortality, agriculture, and net migration as an independent variable. The analysis found that 40% of the world's languages are in danger of disappearing completely.
 
-The World Economic Forum reports that there are around 7,000 recognized languages in existence, with African languages comprising one-third of this total. Interestingly, the majority of people worldwide communicate in just 20 languages. Additionally, a concerning statistic reveals that 40% of the world's languages are in danger of disappearing completely.
-
-However, it's important to note that not all endangered languages face an equal risk of extinction. UNESCO has devised a classification system that assesses the vulnerability of languages, providing insights into their level of endangerment.
+It's important to note that not all endangered languages face an equal risk of extinction. UNESCO has devised a classification system that assesses the vulnerability of languages, providing insights into their level of endangerment.
 
 | Classification | Explanation |
 |----------------|-------------|
