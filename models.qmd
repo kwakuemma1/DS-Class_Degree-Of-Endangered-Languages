@@ -8,8 +8,7 @@ execute:
 ---
 
 ## Introduction
-The models used for this project were the Bayesian model and Ordinal model. The Bayesian model (stan_glm) was used for predicting how likely the covariates (literacy, infant mortality, and agriculture) would have an impact on the degree of endangerment. And the ordinal model (stan_plor) was used for predicting the probability of endangerment of each of the degrees of endangerment.  
-
+The models employed in this project encompassed the Bayesian model and the Ordinal model. The Bayesian model, specifically the stan_glm framework, served as a tool for estimating the likelihood of the covariates (namely, literacy, infant mortality, and agriculture) exerting influence on the degree of endangerment. Conversely, the ordinal model, utilizing the stan_plor approach, made the prediction of the endangerment probability associated with each classification level of endangerment.
 
 
 ```{r}
