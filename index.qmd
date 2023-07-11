@@ -1,43 +1,23 @@
 ---
-title: "Endangered Languages"
+title: ""
 format: html
 execute: 
   echo: false
 ---
 
 
-## How many are Languages are Endangered? 
-(overview of what you did...)
-Reported by the World Economic Forum there are approximately 7,000 recognized languages worldwide, 
-African languages make up one-third of the total, while the majority of people globally communicate 
-in only 20 languages. The following data was pulled from data sets from mrbalikci github endangered-languages. Mapping data was then used to visualize most countries scale on which level of endangered language their in as well as the classification of endangerment of languages in each country that are know of so far. I then estimated a Bayesian linear model with degree of endangerment as the dependent variable and literacy, infant mortality, agriculture, and net migration as an independent variable. The analysis found that 40% of the world's languages are in danger of disappearing completely.
-
-It's important to note that not all endangered languages face an equal risk of extinction. UNESCO has devised a classification system that assesses the vulnerability of languages, providing insights into their level of endangerment.
-
-| Classification | Explanation |
-|----------------|-------------|
-| Vulnerable     |The language is commonly spoken by children, but its usage might be limited to specific areas or contexts. (ex: home, etc) |
-| Definitely Endangered | Children no longer acquire the language as their first language within their family environment. |                
-| Severely Endangered | The language is spoken by grandparents and older generations, and although parents may comprehend it, they do not actively use it when communicating with their children or among themselves. |         
-| Critically Endangered | The language is spoken partially and infrequently by the youngest speakers, who are typically grandparents or older individuals. |            
-| Extinct        | There are no remaining individuals who can speak the language.|
-
-
-## Global Map Sphere 
-
-The map below shows most countries scale on which level of endangered language their in based on the UNESCO’s classification system. 1 meaning on average it has vulnerable
-languages all the way to 5 meaning on average it has extinct languages.  
-
+## What are endangered languages and how can we help save them?
 
 ```{r}
 #| label: globe data
 #| message: false
+#| warning: false
 # Packages
-
 # Data Manipulation
 library(tidyverse) # For data manipulation
 library(janitor)   # For clean column names, and other utilities
 library(glue)      # String manipulation
+library(gt)        # For fancy tables
 
 # Interactive Maps
 library(htmltools)
@@ -65,43 +45,94 @@ covariates <- readRDS("covariates.Rds")
 getMapGepProp <- readRDS("getMapGepProp.Rds")
 ```
 
+According to the [World Economic Forum](https://www.weforum.org/agenda/2019/05/five-ways-indigenous-languages-can-be-championed-for-learners), there are approximately 7,000 recognized languages worldwide, however people communicate mainly in only 20 languages. [A recent research publication](https://www.nature.com/articles/s41559-021-01604-y), found that 1,500 of the world’s endangered languages are at risk of disappearing by the end of the century. 
+
+
+**Almost a staggering half of all the vulnerable languages in the US are extinct!**
 
 
 ```{r}
 #| label: globe plot
 #| message: false
-#| column: screen
+#| warning: false
 
+
+# colors <- colorRamp(c("red","yellow", "green"))(seq(0, 1, length.out = 10))
 plot_geo(locations=country_doe_orig$country_codes,
          marker = list(colorbar = list(title = 'Country Median DoE')),
-         colorscale="YlOrRd",
+         colorscale= "RdOrYl", #"YlOrRd",
          text=paste(country_doe_orig$country_name, country_doe_orig$language_count, sep = "-"),
          z=country_doe_orig$degree_of_endangerment_median) |>
   layout(
     showlegend = T, geo = getMapGepProp(),
-    title = 'World Language Degree of Endangerment Scale by Country'
+    title = 'Median Degree of Endangerment by Country'
   )
 ```
 
 
-## World Map of the Classification of Endangered Langueages 
 
-The map below shows the classification of endangerment of languages in each country that are know of so far.
+The purpose of project is to explore some of the global factors affecting language endangerment in an attempt to find ways to help save endangered languages. Some factors affecting global language endangerment are explored. A Bayesian linear model was subsequently built to verify the significance of these factors, and predict the degree of language endangerment.
+
+Table 1 below is the official UNESCO Language Endangerment Classification System.
+
+
+```{r}
+#| label: classification table
+#| message: false
+#| warning: false
+#| column: body-outset
+# Packages
+
+tribble(
+  ~Classification, ~Explanation,
+  "1: Vulnerable", "The language is commonly spoken by children, but its usage might be limited to specific areas or contexts. (ex: home, etc)",
+  "2: Definitely Endangered", "Children no longer acquire the language as their first language within their family environment.",             
+  "3: Severely Endangered", "The language is spoken by grandparents and older generations, and although parents may comprehend it, they do not actively use it when communicating with their children or among themselves.",      
+  "4: Critically Endangered", "The language is spoken partially and infrequently by the youngest speakers, who are typically grandparents or older individuals.",           
+  "5: Extinct", "There are no remaining individuals who can speak the language."
+) |>
+  gt() |>
+  cols_width(
+    Classification ~ px(150),
+    Explanation ~ px(550)
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "#E5E1DC")
+      ),
+    locations = cells_body(
+      rows = Classification %in% c("2: Definitely Endangered", "4: Critically Endangered")
+    )
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_footnote(
+    footnote = "Table 1: UNESCO Classification of Degrees of Language Endangerment",
+    locations = cells_column_labels(columns = Classification)
+  )
+```
+
+
 
 ```{r}
 #| label: flat map data
 #| message: false
+#| warning: false
 # source('data_01_clean_flat_map_data.R')
 # Below are the output if you run the line above
 map_data <- readRDS("map_data.Rds")
 ```
 
 
+## Endangered Languages in the World
 
 ```{r}
 #| label: flat map plot
 #| column: screen
 #| message: false
+#| warning: false
 
 color_pal <- colorFactor(
   palette = c(
@@ -162,7 +193,13 @@ interactive_map |>
             "topright", pal = color_pal, values = ~endangerment_degree,
             title = "Degree of Endangerment",
             opacity = 1
-  ) |>
-  addControl(title, position = "topleft", className="map-title")
+  ) 
+# |>
+#   addControl(title, position = "topleft", className="map-title")
 ```
+
+
+
+
+
 

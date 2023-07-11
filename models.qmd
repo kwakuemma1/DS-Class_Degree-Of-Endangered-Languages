@@ -1,18 +1,18 @@
 ---
-title: "Models Used"
+title: ""
 editor: visual
 execute: 
   echo: false
+  warning: false
+  message: false
 ---
 
 ## Introduction
 The models used for this project were the Bayesian model and Ordinal model. The Bayesian model (stan_glm) was used for predicting how likely the covariates (literacy, infant mortality, and agriculture) would have an impact on the degree of endangerment. And the ordinal model (stan_plor) was used for predicting the probability of endangerment of each of the degrees of endangerment.  
 
 
-## Load Relevant Packages
 
-```{r, warning=FALSE}
-#| message: false
+```{r}
 library(tidyverse) # for data manipulation
 library(rstanarm) # for stan_glm stan_polr models
 library(broom.mixed)  # to print model results
@@ -21,9 +21,7 @@ library(tidybayes)  # to sample from Bayesian model. Or to use your model for si
 ```
 
 
-## Load Data
 ```{r}
-#| message: false
 # source('data_01_clean_languages_final.R')
 # Below are the output if you run the line above
 combined_data <- readRDS("combined_data.Rds")
@@ -36,7 +34,6 @@ combined_data <- readRDS("combined_data.Rds")
 Below are the results after running the Bayesian model and Ordinal model as well as their mathematical representation/formula. 
 
 ```{r}
-#| message: false
 covariates <- c(
   'literacy',
   'infant_mortality',
@@ -62,7 +59,6 @@ $$
 
 
 ```{r}
-#| message: false
 model_numeric <- readRDS("model_numeric.Rds")
 model_numeric
 ```
@@ -70,7 +66,6 @@ model_numeric
 
 
 ```{r}
-#| message: false
 broom.mixed::tidy(model_numeric)
 ```
 
@@ -87,14 +82,12 @@ $$
 
 
 ```{r}
-#| message: false
 plot(model_numeric, "areas", regex_pars = c('literacy', 'agriculture'),
      prob = 0.5, prob_outer = 0.9)
 ```
 
 
 ```{r}
-#| message: false
 plot(model_numeric, "areas", regex_pars = c('infant_mortality','net_migration'),
      prob = 0.5, prob_outer = 0.9)
 ```
@@ -125,7 +118,6 @@ $$
 
 
 ```{r}
-#| message: false
 model_formula_factor <- readRDS("model_factor.Rds")
 
 model_formula_factor
@@ -133,8 +125,7 @@ model_formula_factor
 
 
 ```{r}
-#| message: false
-broom.mixed::tidy(model_factor)
+broom.mixed::tidy(model_formula_factor)
 ```
 
 $$
@@ -160,14 +151,12 @@ $$
 
 
 ```{r}
-#| message: false
-plot(model_factor, "areas", regex_pars = c('literacy', 'agriculture'),
+plot(model_formula_factor, "areas", regex_pars = c('literacy', 'agriculture'),
      prob = 0.5, prob_outer = 0.9)
 ```
 
 
 ```{r}
-#| message: false
-plot(model_factor, "areas", regex_pars = c('infant_mortality','net_migration'),
+plot(model_formula_factor, "areas", regex_pars = c('infant_mortality','net_migration'),
      prob = 0.5, prob_outer = 0.9)
 ```

@@ -7,7 +7,10 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - models.qmd
+      - href: eda.qmd
+        text: Visual Analysis
+      - href: models.qmd
+        text: Models
       - sources.qmd
       - about.qmd
       

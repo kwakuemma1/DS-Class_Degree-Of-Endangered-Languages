@@ -3,8 +3,7 @@ title: "About"
 ---
 
 ## About Me
-Hi, My name is [Emmanuel Yeboah.](https://github.com/kwakuemma1) I'm a rising Junior at McKinney Boyd High School
-I enjoy and plotting interactive graphs in RStudios, playing badminton (or tennis), and filmmaking. 
+Hi, My name is [Emmanuel Yeboah.](https://github.com/kwakuemma1) I'm a rising Junior at McKinney Boyd High School in Allen, TX. I enjoy graphic-designing, film-making, and playing badminton (or tennis). 
 
 You can reach my at `emmayeboah2007@gmail.com`.
 

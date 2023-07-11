@@ -3,7 +3,10 @@ title: "Sources"
 ---
 
 ## The Dataset I used For this Project:
-  - [mrbalikci:endangered-languages](https://github.com/mrbalikci/endangered-languages/tree/master)
+  - [Kaggle: Languages Endangerment Data](https://github.com/mrbalikci/endangered-languages/blob/master/data.csv)
+  - [Kaggle: Country-Level Socio-economic Data: Source A](https://github.com/mrbalikci/endangered-languages/blob/master/GDP.csv)
+  - [Nature Article: Country-Level Socio-economic Data: Source B](https://www.nature.com/articles/s41559-021-01604-y)
+
 
 ## The Resources I used for this Project:
   - [The Quarto Guide](https://quarto.org/docs/guide/)

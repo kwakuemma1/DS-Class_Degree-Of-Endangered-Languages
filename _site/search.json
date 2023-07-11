@@ -1,31 +1,17 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Hi, My name is Emmanuel Yeboah. I’m a rising Junior at McKinney Boyd High School I enjoy modern technological devices, playing badminton (or tennis), and plotting interactive graphs in RStudios.\nYou can reach my at emmayeboah2007@gmail.com."
-  },
-  {
-    "objectID": "about.html#about-this-project",
-    "href": "about.html#about-this-project",
-    "title": "About",
-    "section": "About this Project",
-    "text": "About this Project\nThis project was created as a part of Kane’s Data Science Bootcamp a 6-week course that teaches you the basics of Data Science."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "**Degree Of Endangered Languages Around the World**",
-    "section": "",
-    "text": "According to the World Economic Forum there are approximately 7,000 known living languages. One-third of these languages are African and most of the world speaks one of 20 languages. Two-fifths of the world’s languages are positioned to die out.\nNot all endangered languages are at equal risk of dying out. Here is UNESCO’s classification system which shows how vulnerable a language is:\n\n\n\n\n\n\n\nClassification\nExplanation\n\n\n\n\nVulnerable\nMost children speak the language, but it may be restricted to certain domains (e.g., home).\n\n\nDefinitely Endangered\nChildren no longer learn the language as a ‘mother tongue’ in the home.\n\n\nSeverely Endangered\nLanguage is spoken by grandparents and older generations; while the parent generation may understand it, they do not speak it to children or among themselves.\n\n\nCritically Endangered\nThe youngest speakers are grandparents and older, and they speak the language partially and infrequently.\n\n\nExtinct\nThere are no speakers left."
-  },
-  {
     "objectID": "sources.html",
     "href": "sources.html",
     "title": "Sources",
     "section": "",
-    "text": "mrbalikci:endangered-languages"
+    "text": "Kaggle: Languages Endangerment Data\nKaggle: Country-Level Socio-economic Data: Source A\nNature Article: Country-Level Socio-economic Data: Source B"
+  },
+  {
+    "objectID": "sources.html#the-dataset-i-used-for-this-project",
+    "href": "sources.html#the-dataset-i-used-for-this-project",
+    "title": "Sources",
+    "section": "",
+    "text": "Kaggle: Languages Endangerment Data\nKaggle: Country-Level Socio-economic Data: Source A\nNature Article: Country-Level Socio-economic Data: Source B"
   },
   {
     "objectID": "sources.html#the-resources-i-used-for-this-project",
@@ -35,31 +21,66 @@
     "text": "The Resources I used for this Project:\n\nThe Quarto Guide\nBriggs, Saga. “Endangered Languages: What Are They & How to Save Them.”\nEndangered Languages Project\nKaggle"
   },
   {
-    "objectID": "index.html#global-map-plot",
-    "href": "index.html#global-map-plot",
-    "title": "**Degree Of Endangered Languages Around the World**",
-    "section": "Global Map Plot",
-    "text": "Global Map Plot"
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "**Endangered Languages Around the World**",
+    "section": "",
+    "text": "According to the World Economic Forum, there are approximately 7,000 recognized languages worldwide, however people communicate mainly in only 20 languages. A recent research publication, found that 1,500 of the world’s endangered languages are at risk of disappearing by the end of the century.\nAlmost a staggering half of all the vulnerable languages in the US are extinct!\n\n\n\n\n\n\nThe purpose of project is to explore some of the global factors affecting language endangerment in an attempt to find ways to help save endangered languages. Some factors affecting global language endangerment are explored. A Bayesian linear model was subsequently built to verify the significance of these factors, and predict the degree of language endangerment.\nTable 1 below is the official UNESCO Language Endangerment Classification System.\n\n\n\n\n\n\n  \n    \n    \n  \n  \n    \n    \n      Classification1\n      Explanation\n    \n  \n  \n    1: Vulnerable\nThe language is commonly spoken by children, but its usage might be limited to specific areas or contexts. (ex: home, etc)\n    2: Definitely Endangered\nChildren no longer acquire the language as their first language within their family environment.\n    3: Severely Endangered\nThe language is spoken by grandparents and older generations, and although parents may comprehend it, they do not actively use it when communicating with their children or among themselves.\n    4: Critically Endangered\nThe language is spoken partially and infrequently by the youngest speakers, who are typically grandparents or older individuals.\n    5: Extinct\nThere are no remaining individuals who can speak the language.\n  \n  \n  \n    \n      1 Table 1: UNESCO Classification of Degrees of Language Endangerment"
   },
   {
-    "objectID": "index.html#global-map-sphere",
-    "href": "index.html#global-map-sphere",
-    "title": "**Degree Of Endangered Languages Around the World**",
-    "section": "Global Map Sphere",
-    "text": "Global Map Sphere\nThe map below shows most countries scale on which level of endangered language their in based on the UNESCO’s classification system. 1 meaning on average it has vulnerable languages all the way to 5 meaning on average it has extinct languages."
+    "objectID": "index.html#what-are-endangered-languages-and-how-can-we-help-save-them",
+    "href": "index.html#what-are-endangered-languages-and-how-can-we-help-save-them",
+    "title": "**Endangered Languages Around the World**",
+    "section": "",
+    "text": "According to the World Economic Forum, there are approximately 7,000 recognized languages worldwide, however people communicate mainly in only 20 languages. A recent research publication, found that 1,500 of the world’s endangered languages are at risk of disappearing by the end of the century.\nAlmost a staggering half of all the vulnerable languages in the US are extinct!\n\n\n\n\n\n\nThe purpose of project is to explore some of the global factors affecting language endangerment in an attempt to find ways to help save endangered languages. Some factors affecting global language endangerment are explored. A Bayesian linear model was subsequently built to verify the significance of these factors, and predict the degree of language endangerment.\nTable 1 below is the official UNESCO Language Endangerment Classification System.\n\n\n\n\n\n\n  \n    \n    \n  \n  \n    \n    \n      Classification1\n      Explanation\n    \n  \n  \n    1: Vulnerable\nThe language is commonly spoken by children, but its usage might be limited to specific areas or contexts. (ex: home, etc)\n    2: Definitely Endangered\nChildren no longer acquire the language as their first language within their family environment.\n    3: Severely Endangered\nThe language is spoken by grandparents and older generations, and although parents may comprehend it, they do not actively use it when communicating with their children or among themselves.\n    4: Critically Endangered\nThe language is spoken partially and infrequently by the youngest speakers, who are typically grandparents or older individuals.\n    5: Extinct\nThere are no remaining individuals who can speak the language.\n  \n  \n  \n    \n      1 Table 1: UNESCO Classification of Degrees of Language Endangerment"
   },
   {
-    "objectID": "index.html#world-map-of-clssification-of-endangered-langueages",
-    "href": "index.html#world-map-of-clssification-of-endangered-langueages",
-    "title": "**Degree Of Endangered Languages Around the World**",
-    "section": "World Map of Clssification Of Endangered Langueages",
-    "text": "World Map of Clssification Of Endangered Langueages"
+    "objectID": "index.html#endangered-languages-in-the-world",
+    "href": "index.html#endangered-languages-in-the-world",
+    "title": "**Endangered Languages Around the World**",
+    "section": "Endangered Languages in the World",
+    "text": "Endangered Languages in the World"
   },
   {
-    "objectID": "index.html#world-map-of-the-clssification-of-endangered-langueages",
-    "href": "index.html#world-map-of-the-clssification-of-endangered-langueages",
-    "title": "**Degree Of Endangered Languages Around the World**",
-    "section": "World Map of the Clssification of Endangered Langueages",
-    "text": "World Map of the Clssification of Endangered Langueages"
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Hi, My name is Emmanuel Yeboah. I’m a rising Junior at McKinney Boyd High School in Allen, TX. I enjoy graphic-designing, film-making, and playing badminton (or tennis).\nYou can reach my at emmayeboah2007@gmail.com."
+  },
+  {
+    "objectID": "about.html#about-me",
+    "href": "about.html#about-me",
+    "title": "About",
+    "section": "",
+    "text": "Hi, My name is Emmanuel Yeboah. I’m a rising Junior at McKinney Boyd High School in Allen, TX. I enjoy graphic-designing, film-making, and playing badminton (or tennis).\nYou can reach my at emmayeboah2007@gmail.com."
+  },
+  {
+    "objectID": "about.html#about-this-project",
+    "href": "about.html#about-this-project",
+    "title": "About",
+    "section": "About this Project",
+    "text": "About this Project\nThis project was created as a part of Kane’s Data Science Bootcamp a 6-week course that teaches you the basics of Data Science."
+  },
+  {
+    "objectID": "models.html",
+    "href": "models.html",
+    "title": "**Endangered Languages Around the World**",
+    "section": "",
+    "text": "The models used for this project were the Bayesian model and Ordinal model. The Bayesian model (stan_glm) was used for predicting how likely the covariates (literacy, infant mortality, and agriculture) would have an impact on the degree of endangerment. And the ordinal model (stan_plor) was used for predicting the probability of endangerment of each of the degrees of endangerment."
+  },
+  {
+    "objectID": "models.html#introduction",
+    "href": "models.html#introduction",
+    "title": "**Endangered Languages Around the World**",
+    "section": "",
+    "text": "The models used for this project were the Bayesian model and Ordinal model. The Bayesian model (stan_glm) was used for predicting how likely the covariates (literacy, infant mortality, and agriculture) would have an impact on the degree of endangerment. And the ordinal model (stan_plor) was used for predicting the probability of endangerment of each of the degrees of endangerment."
+  },
+  {
+    "objectID": "models.html#build-models",
+    "href": "models.html#build-models",
+    "title": "**Endangered Languages Around the World**",
+    "section": "Build Models",
+    "text": "Build Models\nBelow are the results after running the Bayesian model and Ordinal model as well as their mathematical representation/formula.\n\nModel A: Predict Numeric Degree of Endangerment\n\\[\n\\begin{aligned}\n\\operatorname{degree\\_of\\_endangerment\\_numeric} &= \\alpha + \\beta_{1}(\\operatorname{literacy})\\\\\n&\\quad + \\beta_{2}(\\operatorname{infant\\_mortality}) + \\beta_{3}(\\operatorname{agriculture})\\\\\n&\\quad + \\beta_{4}(\\operatorname{proximity\\_to\\_capital\\_city}) + \\beta_{5}(\\operatorname{minority\\_ed\\_policy})\\\\\n&\\quad + \\beta_{6}(\\operatorname{urban\\_pop\\_pc\\_change\\_1960\\_2017}) + \\epsilon\n\\end{aligned}\n\\]\n\n\nstan_glm\n family:       gaussian [identity]\n formula:      degree_of_endangerment_numeric ~ literacy + infant_mortality + \n       agriculture + proximity_to_capital_city + minority_ed_policy + \n       urban_pop_pc_change_1960_2017\n observations: 72\n predictors:   7\n------\n                              Median MAD_SD\n(Intercept)                    0.6    0.8  \nliteracy                       0.7    0.7  \ninfant_mortality               0.0    0.0  \nagriculture                   -2.3    2.7  \nproximity_to_capital_city      0.4    0.2  \nminority_ed_policy             0.4    0.3  \nurban_pop_pc_change_1960_2017  0.0    0.0  \n\nAuxiliary parameter(s):\n      Median MAD_SD\nsigma 1.0    0.1   \n\n------\n* For help interpreting the printed output see ?print.stanreg\n* For info on the priors used see ?prior_summary.stanreg\n\n\n\n\n# A tibble: 7 × 3\n  term                          estimate std.error\n  &lt;chr&gt;                            &lt;dbl&gt;     &lt;dbl&gt;\n1 (Intercept)                     0.595     0.758 \n2 literacy                        0.689     0.682 \n3 infant_mortality                0.0247    0.0121\n4 agriculture                    -2.29      2.73  \n5 proximity_to_capital_city       0.388     0.162 \n6 minority_ed_policy              0.446     0.263 \n7 urban_pop_pc_change_1960_2017   0.0229    0.0108\n\n\n\\[\n\\begin{aligned}\n\\operatorname{\\widehat{degree\\_of\\_endangerment\\_numeric}} &= 0.595 + 0.689(\\operatorname{literacy})\\\\\n&\\quad + 0.025(\\operatorname{infant\\_mortality}) - 2.292(\\operatorname{agriculture})\\\\\n&\\quad + 0.388(\\operatorname{proximity\\_to\\_capital\\_city}) + 0.446(\\operatorname{minority\\_ed\\_policy})\\\\\n&\\quad + 0.023(\\operatorname{urban\\_pop\\_pc\\_change\\_1960\\_2017})\n\\end{aligned}\n\\]\n\n\n\n\n\n\n\n\n\n\n\n\nModel B: Predict Probability of Degree of Endangerment\n\\[\n\\begin{aligned}\n\\operatorname{\\phi} &= \\beta_{1}(\\operatorname{literacy})\\\\\n&\\quad + \\beta_{2}(\\operatorname{infant\\_mortality}) + \\beta_{3}(\\operatorname{agriculture})\\\\\n&\\quad + \\beta_{4}(\\operatorname{proximity\\_to\\_capital\\_city}) + \\beta_{5}(\\operatorname{minority\\_ed\\_policy})\\\\\n&\\quad + \\beta_{6}(\\operatorname{urban\\_pop\\_pc\\_change\\_1960\\_2017})\n\\end{aligned}\n\\]\n\\[\n\\begin{aligned}\n\\log\\left[ \\frac { P( \\operatorname{vulnerable} \\geq \\operatorname{definitely\\ endangered} ) }{ 1 - P( \\operatorname{vulnerable} \\geq \\operatorname{definitely\\ endangered} ) } \\right] &= \\alpha_{1} - \\phi + \\epsilon \\\\\n\\log\\left[ \\frac { P( \\operatorname{definitely\\ endangered} \\geq \\operatorname{severely\\ endangered} ) }{ 1 - P( \\operatorname{definitely\\ endangered} \\geq \\operatorname{severely\\ endangered} ) } \\right] &= \\alpha_{2} - \\phi + \\epsilon \\\\\n\\log\\left[ \\frac { P( \\operatorname{severely\\ endangered} \\geq \\operatorname{critically\\ endangered} ) }{ 1 - P( \\operatorname{severely\\ endangered} \\geq \\operatorname{critically\\ endangered} ) } \\right] &= \\alpha_{3} - \\phi  + \\epsilon \\\\\n\\log\\left[ \\frac { P( \\operatorname{critically\\ endangered} \\geq \\operatorname{extinct} ) }{ 1 - P( \\operatorname{critically\\ endangered} \\geq \\operatorname{extinct} ) } \\right] &= \\alpha_{4} - \\phi + \\epsilon\n\\end{aligned}\n\\]\n\n\nstan_polr\n family:       ordered [logistic]\n formula:      degree_of_endangerment_factor ~ literacy + infant_mortality + \n       agriculture + proximity_to_capital_city + minority_ed_policy + \n       urban_pop_pc_change_1960_2017\n observations: 72\n------\n                              Median MAD_SD\nliteracy                       0.8    1.0  \ninfant_mortality               0.0    0.0  \nagriculture                   -3.2    4.1  \nproximity_to_capital_city      0.4    0.2  \nminority_ed_policy             0.7    0.4  \nurban_pop_pc_change_1960_2017  0.0    0.0  \n\nCutpoints:\n                                          Median MAD_SD\nvulnerable|definitely endangered          1.0    1.1   \ndefinitely endangered|severely endangered 2.5    1.2   \nseverely endangered|critically endangered 4.0    1.3   \ncritically endangered|extinct             6.1    1.4   \n\n------\n* For help interpreting the printed output see ?print.stanreg\n* For info on the priors used see ?prior_summary.stanreg\n\n\n\n\n# A tibble: 10 × 3\n   term                                      estimate std.error\n   &lt;chr&gt;                                        &lt;dbl&gt;     &lt;dbl&gt;\n 1 literacy                                    0.805     0.988 \n 2 infant_mortality                            0.0307    0.0192\n 3 agriculture                                -3.18      4.12  \n 4 proximity_to_capital_city                   0.433     0.231 \n 5 minority_ed_policy                          0.681     0.379 \n 6 urban_pop_pc_change_1960_2017               0.0312    0.0163\n 7 vulnerable|definitely endangered            1.01      1.13  \n 8 definitely endangered|severely endangered   2.54      1.19  \n 9 severely endangered|critically endangered   4.04      1.26  \n10 critically endangered|extinct               6.07      1.43  \n\n\n\\[\n\\begin{aligned}\n\\operatorname{\\hat{\\phi}} &=0.805(\\operatorname{literacy})\\\\\n&\\quad + 0.307(\\operatorname{infant\\_mortality}) - 3.176(\\operatorname{agriculture})\\\\\n&\\quad + 0.433(\\operatorname{proximity\\_to\\_capital\\_city}) + 0.681(\\operatorname{minority\\_ed\\_policy})\\\\\n&\\quad + 0.031(\\operatorname{urban\\_pop\\_pc\\_change\\_1960\\_2017})\n\\end{aligned}\n\\]\n\\[\n\\begin{aligned}\n\\log\\left[ \\frac { P( \\operatorname{vulnerable} \\geq \\operatorname{definitely\\ endangered} ) }{ 1 - P( \\operatorname{vulnerable} \\geq \\operatorname{definitely\\ endangered} ) } \\right] &= 1.013 - \\hat{\\phi}\\\\\n\\log\\left[ \\frac { P( \\operatorname{definitely\\ endangered} \\geq \\operatorname{severely\\ endangered} ) }{ 1 - P( \\operatorname{definitely\\ endangered} \\geq \\operatorname{severely\\ endangered} ) } \\right] &= 2.542 - \\hat{\\phi} \\\\\n\\log\\left[ \\frac { P( \\operatorname{severely\\ endangered} \\geq \\operatorname{critically\\ endangered} ) }{ 1 - P( \\operatorname{severely\\ endangered} \\geq \\operatorname{critically\\ endangered} ) } \\right] &= 4.039 - \\hat{\\phi} \\\\\n\\log\\left[ \\frac { P( \\operatorname{critically\\ endangered} \\geq \\operatorname{extinct} ) }{ 1 - P( \\operatorname{critically\\ endangered} \\geq \\operatorname{extinct} ) } \\right] &= 6.065 - \\hat{\\phi}\n\\end{aligned}\n\\]"
   }
 ]
