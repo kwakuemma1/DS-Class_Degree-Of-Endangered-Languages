@@ -1,149 +1,16 @@
----
-title: ""
-editor: visual
-execute: 
-  echo: false
-  warning: false
-  message: false
----
-
-
-## Endangered Languages in the World
-
-
-```{r}
-#| label: eda globe data
-#| message: false
-#| warning: false
-# Packages
-
-# Data Manipulation
-library(tidyverse) # For data manipulation
-library(janitor)   # For clean column names, and other utilities
-library(glue)      # String manipulation
-library(gt)        # For fancy tables
-
-# Interactive Maps
-library(htmltools)
-library(plotly)    # For interactive plots
-library(leaflet)   # For interactive maps
-
-# Map packages
-library(sf)        # For map shape files
-library(tigris)   
-library(rnaturalearth)
-library(ggspatial)
-
-# Plotting packages
-library(scales)
-library(patchwork) 
-library(RColorBrewer)
-require(plotly)
-
-
-# source('data_01_clean_languages_final.R')
-# Below are the output if you run the line above
-combined_data <- readRDS("combined_data.Rds")
-country_doe_orig <- readRDS("country_doe_orig.Rds")
-country_doe <- readRDS("country_doe.Rds")
-covariates <- readRDS("covariates.Rds")
-getMapGepProp <- readRDS("getMapGepProp.Rds")
-```
-
-
-```{r}
-#| label: eda flat map data
-#| message: false
-#| warning: false
-# source('data_01_clean_flat_map_data.R')
-# Below are the output if you run the line above
-map_data <- readRDS("map_data.Rds")
-```
-
-
-
-```{r}
-#| label: flat map plot
-#| column: screen
-#| message: false
-#| warning: false
-
-color_pal <- colorFactor(
-  palette = c(
-    'green',
-    'orange',
-    '#D73377',
-    '#4A0D67', 
-    'red',
-    '#6F0C17',
-    'black',
-    '#002642',
-    'grey'
-    
-  ),
-  domain = map_data$endangerment_degree
-)
-
-
-interactive_map <- leaflet() |>
-  addTiles()
-
-interactive_map <- interactive_map |> 
-  addCircleMarkers(
-    data = map_data,  # Use your data frame
-    lng = ~longitude,  # Column name for longitude
-    lat = ~latitude,  # Column name for latitude
-    color = ~color_pal(endangerment_degree),  # Column name for the categorical variable
-    radius = ~confidence_in_degree,  # Size of the markers
-    stroke = FALSE,  # Remove stroke around markers
-    fillOpacity = 0.7,  # Opacity of the markers
-    label = ~name_in_the_language #endangerment_degree  # Display the category label on hover
-  )
-
-
-
-tag.map.title <- tags$style(HTML("
-  .leaflet-control.map-title { 
-    transform: translate(-50%,20%);
-    position: fixed !important;
-    left: 50%;
-    text-align: center;
-    padding-left: 10px; 
-    padding-right: 10px; 
-    background: rgba(255,255,255,0.75);
-    font-weight: bold;
-    font-size: 28px;
-  }
-"))
-
-title <- tags$div(
-  tag.map.title, HTML("Classification of Endangered Languages across the World.<br>Size of radius represent degree of belief in classification")
-)  
-
-
-
-interactive_map |>
-  addLegend(data = map_data,
-            "topright", pal = color_pal, values = ~endangerment_degree,
-            title = "Degree of Endangerment",
-            opacity = 1
-  ) 
-# |>
-#   addControl(title, position = "topleft", className="map-title")
-```
-
-
-## Proportion of the Degrees of Endangerment
-
-
-```{r}
-#| label: lang percents
-
+library(tidyverse)
+library(brms)
+library(tidybayes)
 library(scales)
 library(patchwork)
+library(broom.mixed)
+library(rstanarm)
 library(ggtext)
+options(mc.cores = parallel::detectCores())
 
+source('data_03_major_cities_proximity.R')
 
+# Plot stuff
 clrs <- rev(MetBrewer::met.brewer("Ingres", length(unique(combined_data$degree_of_endangerment))))
 theme_set(theme_bw())
 
@@ -172,8 +39,8 @@ p1 <- combined_data |>
   labs(x = "Degree of Endangerment", y = "Count") +
   theme(plot.title = element_text(size = rel(1), hjust = 0.5),
         axis.text.x = element_text(angle = 45, hjust = 1))
-
 p1
+
 
 p2 <- combined_data |> 
   count(degree_of_endangerment_factor) |> 
@@ -185,76 +52,26 @@ p2 <- combined_data |>
   scale_y_continuous(labels = label_percent()) +
   labs(x = "Degree of Endangerment", y = "Cumulative proportion") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
 p2
-```
+
+p1 | p2
+
+p3 <- combined_data |> 
+  count(degree_of_endangerment_factor) |> 
+  mutate(pr_k = n / sum(n),
+         cum_pr_k = cumsum(pr_k)) |> 
+  mutate(alpha_k = qlogis(cum_pr_k)) |> 
+  ggplot(aes(x = degree_of_endangerment_factor, y = alpha_k)) +
+  geom_line(aes(group = 0), size = 1, color = clrs) +
+  geom_point(shape = 21, fill = clrs, color = "white", size = 5, stroke = 1) +
+  labs(x = "Degree of Endangerment", y = "Log cumulative odds")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+p3
 
 
-
-## Median Language Endangerment By Country
-
-**Almost a staggering half of all the vulnerable languages in the US are extinct!**
+p1 | p2 | p3
 
 
-```{r}
-#| label: eda globe plot
-
-country_doe_orig2 <- country_doe_orig |>
-  mutate(country_name = tolower(country_name)) |>
-  left_join(
-  combined_data |>
-    group_by(countries) |>
-    summarise(
-      urban_proximity_median = round(median(proximity_to_capital_city, na.rm=T), 2),
-      literacy_rate = round(mean(literacy, na.rm=T), 2),
-      urbanization_rate = round(mean(urban_pop_pc_change_1960_2017, na.rm=T), 2),
-      vul_rate = round(mean(degree_of_endangerment_factor == "vulnerable", na.rm=T), 2),
-      def_rate = round(mean(degree_of_endangerment_factor == "definitely endangered", na.rm=T), 2),
-      sev_rate = round(mean(degree_of_endangerment_factor == "severely endangered", na.rm=T), 2),
-      crit_rate = round(mean(degree_of_endangerment_factor == "critically endangered", na.rm=T), 2),
-      ext_rate = round(mean(degree_of_endangerment_factor == "extinct", na.rm=T), 2)
-    ),
-  by = c("country_name" = "countries")
-    
-) |>
-  mutate(
-    the_label = glue(
-      "Country: {country_name},
-      Number of Endangered Languages: {language_count},
-      Proximity to Urban Center Score: {urban_proximity_median},
-      Literacy Rate: {literacy_rate},
-      Urbanization Rate: {urbanization_rate},
-      Prop. Vulnerable: {vul_rate},
-      Prop. Definitely Endangered: {def_rate},
-      Prop. Severely Endangered: {sev_rate},
-      Prop. Critically Endangered: {crit_rate},
-      Prop. Extinct: {ext_rate}"
-    )
-  )
-
-
-# colors <- colorRamp(c("red","yellow", "green"))(seq(0, 1, length.out = 10))
-plot_geo(locations=country_doe_orig2$country_codes,
-         marker = list(colorbar = list(title = 'Country Median DoE')),
-         colorscale= "RdOrYl", #"YlOrRd",
-         text=country_doe_orig2$the_label,
-         z=country_doe_orig2$degree_of_endangerment_median) |>
-  layout(
-    showlegend = T, geo = getMapGepProp(),
-    title = 'Median Degree of Endangerment by Country'
-  )
-```
-
-
-
-## How does Literacy Rate Affect Language Endangerment
-
-:::{.column-body-outset}
-::: panel-tabset
-
-### All
-```{r}
-#| label: lit rate a
 
 combined_data |> 
   dplyr::select(degree_of_endangerment_factor, literacy) |>
@@ -288,16 +105,8 @@ combined_data |>
        subtitle = "Most Literate vs. Least Literate Countries") +
   theme_nice() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
-```
 
 
-The most literate countries seem to have a higher proportion definitely endangered languages compared to the bottom 10 % (or least literate countries)
-
-### By Minority Education Policy
-```{r}
-#| label: lit rate b
-#| fig-width: 10
-#| fig-height: 6
 
 
 l2 <- combined_data |> 
@@ -375,27 +184,7 @@ l1 <- combined_data |>
 l1 + l2 + 
   plot_annotation(title = "Language Endangerment: Most Literate vs. Least Literate Countries") +
   plot_layout(guides = "collect")
-```
 
-
-Countries with minority education policies have lower percent of extinct languages
-
-
-:::
-
-:::
-
-
-
-
-## How does Infant Mortality Rate Affect Language Endangerment
-
-:::{.column-body-outset}
-::: panel-tabset
-
-### All
-```{r}
-#| label: mortality rate a
 
 combined_data |> 
   dplyr::select(degree_of_endangerment_factor, infant_mortality) |>
@@ -429,16 +218,7 @@ combined_data |>
        subtitle = "Most Fatal vs. Least Fatal for Infants") +
   theme_nice() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
-```
 
-A lot more languages are definitely and severely endangered for countries with good infant mortality care compared to countries with bad or high infant mortality rate
-
-
-### By Minority Education Policy
-```{r}
-#| label: mortality rate b
-#| fig-width: 10
-#| fig-height: 6
 
 
 i2 <- combined_data |> 
@@ -517,23 +297,28 @@ i1 + i2 +
   plot_annotation(title = "Language Endangerment: Most Fatal vs. Least Fatal Countries for Infants") +
   plot_layout(guides = "collect") 
 
-```
 
 
-A lot more countries are severely endangered in advanced economies where infant mortality is low and there is no minority education policy
-
-
-:::
-
-:::
-
-
-
-
-
-
-
-
-
-
+getMapGepProp<-function(){
+  list(
+    showframe = T,
+    showocean = T,
+    #oceancolor = 'rgb(28,107,160)',
+    oceancolor = 'rgb(222,243,246)',
+    projection = list(
+      type = 'orthographic',
+      rotation = list(
+        lon = 60,
+        lat = 10)
+    ),
+    lonaxis =  list(
+      showgrid = F,
+      gridcolor = 'rgb(102, 102, 102)'
+    ),
+    lataxis = list(
+      showgrid = F,
+      gridcolor = 'rgb(102, 102, 102)'
+    )
+  )
+}
 

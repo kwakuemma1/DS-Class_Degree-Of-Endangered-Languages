@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Endangered Languages Around the World -</title>
+<title>Endangered Languages -</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -59,6 +59,10 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="site_libs/viz-1.8.2/viz.js"></script>
+<link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
+<script src="site_libs/grViz-binding-1.0.10/grViz.js"></script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -74,7 +78,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title"><strong>Endangered Languages Around the World</strong></span>
+    <span class="navbar-title"><strong>Endangered Languages</strong></span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -88,8 +92,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./eda.html" rel="" target="">
+ <span class="menu-text">Visual Analysis</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link active" href="./models.html" rel="" target="" aria-current="page">
- <span class="menu-text">Models</span></a>
+ <span class="menu-text">Quantitative Analysis</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./sources.html" rel="" target="">
@@ -116,11 +124,17 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#build-models" id="toc-build-models" class="nav-link" data-scroll-target="#build-models">Build Models</a>
+  <li><a href="#model-a-predict-numeric-degree-of-endangerment" id="toc-model-a-predict-numeric-degree-of-endangerment" class="nav-link" data-scroll-target="#model-a-predict-numeric-degree-of-endangerment">Model A: Predict Numeric Degree of Endangerment</a>
   <ul class="collapse">
-  <li><a href="#model-a-predict-numeric-degree-of-endangerment" id="toc-model-a-predict-numeric-degree-of-endangerment" class="nav-link" data-scroll-target="#model-a-predict-numeric-degree-of-endangerment">Model A: Predict Numeric Degree of Endangerment</a></li>
-  <li><a href="#model-b-predict-probability-of-degree-of-endangerment" id="toc-model-b-predict-probability-of-degree-of-endangerment" class="nav-link" data-scroll-target="#model-b-predict-probability-of-degree-of-endangerment">Model B: Predict Probability of Degree of Endangerment</a></li>
+  <li><a href="#assessing-model" id="toc-assessing-model" class="nav-link" data-scroll-target="#assessing-model">Assessing Model</a></li>
+  <li><a href="#key-discoveries" id="toc-key-discoveries" class="nav-link" data-scroll-target="#key-discoveries">Key Discoveries</a></li>
   </ul></li>
+  <li><a href="#model-b-predict-probability-of-degree-of-endangerment" id="toc-model-b-predict-probability-of-degree-of-endangerment" class="nav-link" data-scroll-target="#model-b-predict-probability-of-degree-of-endangerment">Model B: Predict Probability of Degree of Endangerment</a>
+  <ul class="collapse">
+  <li><a href="#assessing-model-1" id="toc-assessing-model-1" class="nav-link" data-scroll-target="#assessing-model-1">Assessing Model</a></li>
+  <li><a href="#key-discoveries-1" id="toc-key-discoveries-1" class="nav-link" data-scroll-target="#key-discoveries-1">Key Discoveries</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -131,13 +145,29 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>The models used for this project were the Bayesian model and Ordinal model. The Bayesian model (stan_glm) was used for predicting how likely the covariates (literacy, infant mortality, and agriculture) would have an impact on the degree of endangerment. And the ordinal model (stan_plor) was used for predicting the probability of endangerment of each of the degrees of endangerment.</p>
+<p>To quantify and ascertain whether social and economic factors affect the degree of language endangerment, two Bayesian linear models were built:</p>
+<ul>
+<li>Model A: Predict the degree of language endangerment</li>
+<li>Model B: Predict the probability of language endangerment. With Model B, the plan is to predict the probability of an endangered language evolving from one classification to the order.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5d6fa1375a9b288b8c72" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-5d6fa1375a9b288b8c72">{"x":{"diagram":"\ndigraph {\n  graph []\n  node []\n    vulnerable\n    definitely_endangered\n    severely_endangered\n    critically_endangered\n    extinct\n  edge []\n    vulnerable->definitely_endangered->severely_endangered->critically_endangered->extinct\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>The social and economic factors explored are:</p>
+<ul>
+<li>literacy: Literacy Rate of the Country</li>
+<li>infant_mortality: Infant Mortality Rate of the Country</li>
+<li>agriculture: Percentage of GDP that is made up of Agriculture</li>
+<li>proximity_to_capital_city: How close is the region in which the language is spoken to the capital city</li>
+<li>minority_ed_policy: Does the country have any policies to foster education in minority languages</li>
+<li>urban_pop_pc_change_1960_2017: Urban Population change between 1960 to 1970</li>
+</ul>
 </section>
-<section id="build-models" class="level2">
-<h2 class="anchored" data-anchor-id="build-models">Build Models</h2>
-<p>Below are the results after running the Bayesian model and Ordinal model as well as their mathematical representation/formula.</p>
-<section id="model-a-predict-numeric-degree-of-endangerment" class="level3">
-<h3 class="anchored" data-anchor-id="model-a-predict-numeric-degree-of-endangerment">Model A: Predict Numeric Degree of Endangerment</h3>
+<section id="model-a-predict-numeric-degree-of-endangerment" class="level2">
+<h2 class="anchored" data-anchor-id="model-a-predict-numeric-degree-of-endangerment">Model A: Predict Numeric Degree of Endangerment</h2>
 <p><span class="math display">\[
 \begin{aligned}
 \operatorname{degree\_of\_endangerment\_numeric} &amp;= \alpha + \beta_{1}(\operatorname{literacy})\\
@@ -146,46 +176,503 @@ ul.task-list li input[type="checkbox"] {
 &amp;\quad + \beta_{6}(\operatorname{urban\_pop\_pc\_change\_1960\_2017}) + \epsilon
 \end{aligned}
 \]</span></p>
+<section id="assessing-model" class="level3">
+<h3 class="anchored" data-anchor-id="assessing-model">Assessing Model</h3>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>stan_glm
- family:       gaussian [identity]
- formula:      degree_of_endangerment_numeric ~ literacy + infant_mortality + 
-       agriculture + proximity_to_capital_city + minority_ed_policy + 
-       urban_pop_pc_change_1960_2017
- observations: 72
- predictors:   7
-------
-                              Median MAD_SD
-(Intercept)                    0.6    0.8  
-literacy                       0.7    0.7  
-infant_mortality               0.0    0.0  
-agriculture                   -2.3    2.7  
-proximity_to_capital_city      0.4    0.2  
-minority_ed_policy             0.4    0.3  
-urban_pop_pc_change_1960_2017  0.0    0.0  
+<div class="cell-output-display">
 
-Auxiliary parameter(s):
-      Median MAD_SD
-sigma 1.0    0.1   
+<div id="eelonpthof" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#eelonpthof table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-------
-* For help interpreting the printed output see ?print.stanreg
-* For info on the priors used see ?prior_summary.stanreg</code></pre>
+#eelonpthof thead, #eelonpthof tbody, #eelonpthof tfoot, #eelonpthof tr, #eelonpthof td, #eelonpthof th {
+  border-style: none;
+}
+
+#eelonpthof p {
+  margin: 0;
+  padding: 0;
+}
+
+#eelonpthof .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#eelonpthof .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#eelonpthof .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#eelonpthof .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#eelonpthof .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eelonpthof .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eelonpthof .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eelonpthof .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#eelonpthof .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#eelonpthof .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#eelonpthof .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#eelonpthof .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#eelonpthof .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#eelonpthof .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#eelonpthof .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#eelonpthof .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#eelonpthof .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#eelonpthof .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#eelonpthof .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eelonpthof .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#eelonpthof .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#eelonpthof .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#eelonpthof .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eelonpthof .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#eelonpthof .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#eelonpthof .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eelonpthof .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eelonpthof .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#eelonpthof .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eelonpthof .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#eelonpthof .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eelonpthof .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eelonpthof .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eelonpthof .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eelonpthof .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eelonpthof .gt_left {
+  text-align: left;
+}
+
+#eelonpthof .gt_center {
+  text-align: center;
+}
+
+#eelonpthof .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#eelonpthof .gt_font_normal {
+  font-weight: normal;
+}
+
+#eelonpthof .gt_font_bold {
+  font-weight: bold;
+}
+
+#eelonpthof .gt_font_italic {
+  font-style: italic;
+}
+
+#eelonpthof .gt_super {
+  font-size: 65%;
+}
+
+#eelonpthof .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#eelonpthof .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#eelonpthof .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#eelonpthof .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#eelonpthof .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#eelonpthof .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#eelonpthof .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Term">Term</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Median">Median</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Lower Limit">Lower Limit</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Upper Limit">Upper Limit</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Is Significant?">Is Significant?</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Term" class="gt_row gt_left">(Intercept)</td>
+<td headers="Median" class="gt_row gt_right">0.594</td>
+<td headers="Lower Limit" class="gt_row gt_right">−0.970</td>
+<td headers="Upper Limit" class="gt_row gt_right">2.145</td>
+<td headers="Is Significant?" class="gt_row gt_left">No</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">literacy</td>
+<td headers="Median" class="gt_row gt_right">0.677</td>
+<td headers="Lower Limit" class="gt_row gt_right">−0.686</td>
+<td headers="Upper Limit" class="gt_row gt_right">2.076</td>
+<td headers="Is Significant?" class="gt_row gt_left">No</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">infant_mortality</td>
+<td headers="Median" class="gt_row gt_right">0.025</td>
+<td headers="Lower Limit" class="gt_row gt_right">0.000</td>
+<td headers="Upper Limit" class="gt_row gt_right">0.050</td>
+<td headers="Is Significant?" class="gt_row gt_left">No</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">agriculture</td>
+<td headers="Median" class="gt_row gt_right">−2.300</td>
+<td headers="Lower Limit" class="gt_row gt_right">−7.844</td>
+<td headers="Upper Limit" class="gt_row gt_right">3.066</td>
+<td headers="Is Significant?" class="gt_row gt_left">No</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">proximity_to_capital_city</td>
+<td headers="Median" class="gt_row gt_right">0.388</td>
+<td headers="Lower Limit" class="gt_row gt_right">0.076</td>
+<td headers="Upper Limit" class="gt_row gt_right">0.702</td>
+<td headers="Is Significant?" class="gt_row gt_left">Yes</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">minority_ed_policy</td>
+<td headers="Median" class="gt_row gt_right">0.441</td>
+<td headers="Lower Limit" class="gt_row gt_right">−0.076</td>
+<td headers="Upper Limit" class="gt_row gt_right">0.952</td>
+<td headers="Is Significant?" class="gt_row gt_left">No</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">urban_pop_pc_change_1960_2017</td>
+<td headers="Median" class="gt_row gt_right">0.023</td>
+<td headers="Lower Limit" class="gt_row gt_right">0.002</td>
+<td headers="Upper Limit" class="gt_row gt_right">0.044</td>
+<td headers="Is Significant?" class="gt_row gt_left">Yes</td></tr>
+  </tbody>
+  
+  
+</table>
 </div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 7 × 3
-  term                          estimate std.error
-  &lt;chr&gt;                            &lt;dbl&gt;     &lt;dbl&gt;
-1 (Intercept)                     0.595     0.758 
-2 literacy                        0.689     0.682 
-3 infant_mortality                0.0247    0.0121
-4 agriculture                    -2.29      2.73  
-5 proximity_to_capital_city       0.388     0.162 
-6 minority_ed_policy              0.446     0.263 
-7 urban_pop_pc_change_1960_2017   0.0229    0.0108</code></pre>
 </div>
 </div>
 <p><span class="math display">\[
@@ -198,17 +685,32 @@ sigma 1.0    0.1
 \]</span></p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="models_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="models_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="models_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="models_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="models_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
-<section id="model-b-predict-probability-of-degree-of-endangerment" class="level3">
-<h3 class="anchored" data-anchor-id="model-b-predict-probability-of-degree-of-endangerment">Model B: Predict Probability of Degree of Endangerment</h3>
+<section id="key-discoveries" class="level3">
+<h3 class="anchored" data-anchor-id="key-discoveries">Key Discoveries</h3>
+<p>Urbanization increases the odds of language endangerment.</p>
+<ul>
+<li>When an endangered language is close to an urban center it’s more likely to go extinct</li>
+<li>As migration to urban centers increase, languages become increasingly endangered</li>
+<li>Other social and economic factors do seem to impact degree of endangerment when urbanization is considered</li>
+</ul>
+</section>
+</section>
+<section id="model-b-predict-probability-of-degree-of-endangerment" class="level2">
+<h2 class="anchored" data-anchor-id="model-b-predict-probability-of-degree-of-endangerment">Model B: Predict Probability of Degree of Endangerment</h2>
 <p><span class="math display">\[
 \begin{aligned}
 \operatorname{\phi} &amp;= \beta_{1}(\operatorname{literacy})\\
@@ -225,50 +727,518 @@ sigma 1.0    0.1
 \log\left[ \frac { P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) }{ 1 - P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) } \right] &amp;= \alpha_{4} - \phi + \epsilon
 \end{aligned}
 \]</span></p>
+<section id="assessing-model-1" class="level3">
+<h3 class="anchored" data-anchor-id="assessing-model-1">Assessing Model</h3>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>stan_polr
- family:       ordered [logistic]
- formula:      degree_of_endangerment_factor ~ literacy + infant_mortality + 
-       agriculture + proximity_to_capital_city + minority_ed_policy + 
-       urban_pop_pc_change_1960_2017
- observations: 72
-------
-                              Median MAD_SD
-literacy                       0.8    1.0  
-infant_mortality               0.0    0.0  
-agriculture                   -3.2    4.1  
-proximity_to_capital_city      0.4    0.2  
-minority_ed_policy             0.7    0.4  
-urban_pop_pc_change_1960_2017  0.0    0.0  
+<div class="cell-output-display">
 
-Cutpoints:
-                                          Median MAD_SD
-vulnerable|definitely endangered          1.0    1.1   
-definitely endangered|severely endangered 2.5    1.2   
-severely endangered|critically endangered 4.0    1.3   
-critically endangered|extinct             6.1    1.4   
+<div id="dsbnuakbop" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dsbnuakbop table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-------
-* For help interpreting the printed output see ?print.stanreg
-* For info on the priors used see ?prior_summary.stanreg</code></pre>
+#dsbnuakbop thead, #dsbnuakbop tbody, #dsbnuakbop tfoot, #dsbnuakbop tr, #dsbnuakbop td, #dsbnuakbop th {
+  border-style: none;
+}
+
+#dsbnuakbop p {
+  margin: 0;
+  padding: 0;
+}
+
+#dsbnuakbop .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#dsbnuakbop .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#dsbnuakbop .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#dsbnuakbop .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#dsbnuakbop .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dsbnuakbop .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dsbnuakbop .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dsbnuakbop .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#dsbnuakbop .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#dsbnuakbop .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#dsbnuakbop .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#dsbnuakbop .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#dsbnuakbop .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#dsbnuakbop .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#dsbnuakbop .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#dsbnuakbop .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#dsbnuakbop .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#dsbnuakbop .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#dsbnuakbop .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dsbnuakbop .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#dsbnuakbop .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#dsbnuakbop .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#dsbnuakbop .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dsbnuakbop .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#dsbnuakbop .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#dsbnuakbop .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dsbnuakbop .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dsbnuakbop .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#dsbnuakbop .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dsbnuakbop .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#dsbnuakbop .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dsbnuakbop .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dsbnuakbop .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dsbnuakbop .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dsbnuakbop .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dsbnuakbop .gt_left {
+  text-align: left;
+}
+
+#dsbnuakbop .gt_center {
+  text-align: center;
+}
+
+#dsbnuakbop .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#dsbnuakbop .gt_font_normal {
+  font-weight: normal;
+}
+
+#dsbnuakbop .gt_font_bold {
+  font-weight: bold;
+}
+
+#dsbnuakbop .gt_font_italic {
+  font-style: italic;
+}
+
+#dsbnuakbop .gt_super {
+  font-size: 65%;
+}
+
+#dsbnuakbop .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#dsbnuakbop .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#dsbnuakbop .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#dsbnuakbop .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#dsbnuakbop .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#dsbnuakbop .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#dsbnuakbop .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Term">Term</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Median">Median</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Lower Limit">Lower Limit</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Upper Limit">Upper Limit</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Is Significant?">Is Significant?</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Term" class="gt_row gt_left">literacy</td>
+<td headers="Median" class="gt_row gt_right">0.816</td>
+<td headers="Lower Limit" class="gt_row gt_right">−1.149</td>
+<td headers="Upper Limit" class="gt_row gt_right">2.775</td>
+<td headers="Is Significant?" class="gt_row gt_left">No</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">infant_mortality</td>
+<td headers="Median" class="gt_row gt_right">0.031</td>
+<td headers="Lower Limit" class="gt_row gt_right">−0.004</td>
+<td headers="Upper Limit" class="gt_row gt_right">0.070</td>
+<td headers="Is Significant?" class="gt_row gt_left">No</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">agriculture</td>
+<td headers="Median" class="gt_row gt_right">−3.189</td>
+<td headers="Lower Limit" class="gt_row gt_right">−11.713</td>
+<td headers="Upper Limit" class="gt_row gt_right">4.913</td>
+<td headers="Is Significant?" class="gt_row gt_left">No</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">proximity_to_capital_city</td>
+<td headers="Median" class="gt_row gt_right">0.433</td>
+<td headers="Lower Limit" class="gt_row gt_right">−0.016</td>
+<td headers="Upper Limit" class="gt_row gt_right">0.904</td>
+<td headers="Is Significant?" class="gt_row gt_left">No</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">minority_ed_policy</td>
+<td headers="Median" class="gt_row gt_right">0.683</td>
+<td headers="Lower Limit" class="gt_row gt_right">−0.050</td>
+<td headers="Upper Limit" class="gt_row gt_right">1.442</td>
+<td headers="Is Significant?" class="gt_row gt_left">No</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">urban_pop_pc_change_1960_2017</td>
+<td headers="Median" class="gt_row gt_right">0.031</td>
+<td headers="Lower Limit" class="gt_row gt_right">0.002</td>
+<td headers="Upper Limit" class="gt_row gt_right">0.066</td>
+<td headers="Is Significant?" class="gt_row gt_left">Yes</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">vulnerable|definitely endangered</td>
+<td headers="Median" class="gt_row gt_right">1.009</td>
+<td headers="Lower Limit" class="gt_row gt_right">−1.246</td>
+<td headers="Upper Limit" class="gt_row gt_right">3.281</td>
+<td headers="Is Significant?" class="gt_row gt_left">No</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">definitely endangered|severely endangered</td>
+<td headers="Median" class="gt_row gt_right">2.551</td>
+<td headers="Lower Limit" class="gt_row gt_right">0.263</td>
+<td headers="Upper Limit" class="gt_row gt_right">4.888</td>
+<td headers="Is Significant?" class="gt_row gt_left">Yes</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">severely endangered|critically endangered</td>
+<td headers="Median" class="gt_row gt_right">4.037</td>
+<td headers="Lower Limit" class="gt_row gt_right">1.613</td>
+<td headers="Upper Limit" class="gt_row gt_right">6.525</td>
+<td headers="Is Significant?" class="gt_row gt_left">Yes</td></tr>
+    <tr><td headers="Term" class="gt_row gt_left">critically endangered|extinct</td>
+<td headers="Median" class="gt_row gt_right">6.109</td>
+<td headers="Lower Limit" class="gt_row gt_right">3.410</td>
+<td headers="Upper Limit" class="gt_row gt_right">9.086</td>
+<td headers="Is Significant?" class="gt_row gt_left">Yes</td></tr>
+  </tbody>
+  
+  
+</table>
 </div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10 × 3
-   term                                      estimate std.error
-   &lt;chr&gt;                                        &lt;dbl&gt;     &lt;dbl&gt;
- 1 literacy                                    0.805     0.988 
- 2 infant_mortality                            0.0307    0.0192
- 3 agriculture                                -3.18      4.12  
- 4 proximity_to_capital_city                   0.433     0.231 
- 5 minority_ed_policy                          0.681     0.379 
- 6 urban_pop_pc_change_1960_2017               0.0312    0.0163
- 7 vulnerable|definitely endangered            1.01      1.13  
- 8 definitely endangered|severely endangered   2.54      1.19  
- 9 severely endangered|critically endangered   4.04      1.26  
-10 critically endangered|extinct               6.07      1.43  </code></pre>
 </div>
 </div>
 <p><span class="math display">\[
@@ -289,17 +1259,36 @@ critically endangered|extinct             6.1    1.4
 \]</span></p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="models_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="models_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="models_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<p><img src="models_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-
-
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="models_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
+<section id="key-discoveries-1" class="level3">
+<h3 class="anchored" data-anchor-id="key-discoveries-1">Key Discoveries</h3>
+<p>Urbanization increases the odds of language endangerment.</p>
+<ul>
+<li>When an endangered language is close to an urban center it’s more likely to go extinct</li>
+<li>As migration to urban centers increase, languages become increasingly endangered</li>
+<li>Other social and economic factors do seem to impact degree of endangerment when urbanization is considered</li>
+</ul>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>To help preserve endangered languages, policy makers must introduce policies that make endangered regions more attractive to prevent migration of current speakers to urban regions.</p>
+<p>Also improving literacy rate and agricultural economic opportunities in these regions could help preserve the local population, and in turn preserve the local language.</p>
+
+
 </section>
 
 </main> <!-- /main -->

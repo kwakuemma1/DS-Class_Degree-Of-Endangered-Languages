@@ -8,7 +8,39 @@ execute:
 ---
 
 ## Introduction
-The models employed in this project encompassed the Bayesian model and the Ordinal model. The Bayesian model, specifically the stan_glm framework, served as a tool for estimating the likelihood of the covariates (namely, literacy, infant mortality, and agriculture) exerting influence on the degree of endangerment. Conversely, the ordinal model, utilizing the stan_plor approach, made the prediction of the endangerment probability associated with each classification level of endangerment.
+
+To quantify and ascertain whether social and economic factors affect  the degree of language endangerment, two Bayesian linear models were built:
+
+- Model A: Predict the degree of language endangerment
+- Model B: Predict the probability of language endangerment. With Model B, the plan is to predict the probability of an endangered language evolving from one classification to the order.
+
+```{r}
+DiagrammeR::grViz("
+digraph {
+  graph []
+  node []
+    vulnerable
+    definitely_endangered
+    severely_endangered
+    critically_endangered
+    extinct
+  edge []
+    vulnerable->definitely_endangered->severely_endangered->critically_endangered->extinct
+}
+")
+```
+
+
+The social and economic factors explored are:
+
+- literacy: Literacy Rate of the Country
+- infant_mortality: Infant Mortality Rate of the Country
+- agriculture: Percentage of GDP that is made up of Agriculture
+- proximity_to_capital_city: How close is the region in which the language is spoken to the capital city
+- minority_ed_policy: Does the country have any policies to foster education in minority languages
+- urban_pop_pc_change_1960_2017: Urban Population change between 1960 to 1970
+
+
 
 
 ```{r}
@@ -17,6 +49,8 @@ library(rstanarm) # for stan_glm stan_polr models
 library(broom.mixed)  # to print model results
 library(broom)  # to print out model results
 library(tidybayes)  # to sample from Bayesian model. Or to use your model for simulations
+library(brms)
+library(gt)
 ```
 
 
@@ -27,10 +61,6 @@ combined_data <- readRDS("combined_data.Rds")
 ```
 
 
-
-## Build Models
-
-Below are the results after running the Bayesian model and Ordinal model as well as their mathematical representation/formula. 
 
 ```{r}
 covariates <- c(
@@ -44,7 +74,7 @@ covariates <- c(
 ```
 
 
-### Model A: Predict Numeric Degree of Endangerment
+## Model A: Predict Numeric Degree of Endangerment
 
 $$
 \begin{aligned}
@@ -59,13 +89,31 @@ $$
 
 ```{r}
 model_numeric <- readRDS("model_numeric.Rds")
-model_numeric
 ```
-
+### Assessing Model
 
 
 ```{r}
-broom.mixed::tidy(model_numeric)
+as.data.frame(posterior_summary(model_numeric)) |> 
+  rownames_to_column() |> 
+  dplyr::select(-any_of(c("Est.Error"))) |>
+  set_names(c("Term", "Median", "Lower Limit", "Upper Limit")) |>
+  dplyr::filter(Term != 'sigma') |>
+  mutate(
+    `Is Significant?` = case_when(
+      `Lower Limit` < 0 & `Upper Limit` > 0 ~ "No",
+      TRUE ~ "Yes"
+    )
+  ) |>
+  gt() |>
+  fmt_number(
+    decimals = 3,
+    use_seps = FALSE
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  )
 ```
 
 $$
@@ -92,7 +140,22 @@ plot(model_numeric, "areas", regex_pars = c('infant_mortality','net_migration'),
 ```
 
 
-### Model B: Predict Probability of Degree of Endangerment
+```{r}
+plot(model_numeric, "areas", 
+     regex_pars = c('proximity_to_capital_city', 'urban_pop_pc_change_1960_2017'),
+     prob = 0.5, prob_outer = 0.9)
+```
+
+### Key Discoveries
+
+Urbanization increases the odds of language endangerment.
+
+- When an endangered language is close to an urban center it's more likely to go extinct
+- As migration to urban centers increase, languages become increasingly endangered
+- Other social and economic factors do seem to impact degree of endangerment when urbanization is considered
+
+
+## Model B: Predict Probability of Degree of Endangerment
 
 $$
 \begin{aligned}
@@ -117,14 +180,33 @@ $$
 
 
 ```{r}
-model_formula_factor <- readRDS("model_factor.Rds")
-
-model_formula_factor
+model_factor <- readRDS("model_factor.Rds")
 ```
 
 
+### Assessing Model
+
 ```{r}
-broom.mixed::tidy(model_formula_factor)
+as.data.frame(posterior_summary(model_factor)) |> 
+  rownames_to_column() |> 
+  dplyr::select(-any_of(c("Est.Error"))) |>
+  set_names(c("Term", "Median", "Lower Limit", "Upper Limit")) |>
+  dplyr::filter(Term != 'sigma') |>
+  mutate(
+    `Is Significant?` = case_when(
+      `Lower Limit` < 0 & `Upper Limit` > 0 ~ "No",
+      TRUE ~ "Yes"
+    )
+  ) |>
+  gt() |>
+  fmt_number(
+    decimals = 3,
+    use_seps = FALSE
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  )
 ```
 
 $$
@@ -150,12 +232,39 @@ $$
 
 
 ```{r}
-plot(model_formula_factor, "areas", regex_pars = c('literacy', 'agriculture'),
+plot(model_factor, "areas", regex_pars = c('literacy', 'agriculture'),
      prob = 0.5, prob_outer = 0.9)
 ```
 
 
 ```{r}
-plot(model_formula_factor, "areas", regex_pars = c('infant_mortality','net_migration'),
+plot(model_factor, "areas", regex_pars = c('infant_mortality','net_migration'),
      prob = 0.5, prob_outer = 0.9)
 ```
+
+
+
+```{r}
+plot(model_factor, "areas", 
+     regex_pars = c('proximity_to_capital_city', 'urban_pop_pc_change_1960_2017'),
+     prob = 0.5, prob_outer = 0.9)
+```
+
+
+
+### Key Discoveries
+
+Urbanization increases the odds of language endangerment.
+
+- When an endangered language is close to an urban center it's more likely to go extinct
+- As migration to urban centers increase, languages become increasingly endangered
+- Other social and economic factors do seem to impact degree of endangerment when urbanization is considered
+
+
+
+## Conclusion
+
+To help preserve endangered languages, policy makers must introduce policies that make endangered regions more attractive to prevent migration of current speakers to urban regions.
+
+Also improving literacy rate and agricultural economic opportunities in these regions could help preserve the local population, and in turn preserve the local language.
+

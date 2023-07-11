@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "**Endangered Languages Around the World**"
+  title: "**Endangered Languages**"
   navbar:
     left:
       - href: index.qmd
@@ -10,7 +10,7 @@ website:
       - href: eda.qmd
         text: Visual Analysis
       - href: models.qmd
-        text: Models
+        text: Quantitative Analysis
       - sources.qmd
       - about.qmd
       

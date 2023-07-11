@@ -5,6 +5,10 @@ library(scales)
 library(patchwork)
 library(broom.mixed)
 library(rstanarm)
+
+
+
+library(DiagrammeR)
 options(mc.cores = parallel::detectCores())
 
 # source('data_03_major_cities_proximity.R')
