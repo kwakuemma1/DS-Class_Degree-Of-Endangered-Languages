@@ -22,7 +22,7 @@ To quantify and ascertain whether social and economic factors affect the degree 
 ```
   
   
--   Model B: Predict the probability of language endangerment. With Model B, the plan is to predict the probability of an endangered language evolving up from one classification all the way to finally becoming extinct. A Bayesian ordinal logistic regression model is built to understand the orderly nature of across the degrees (or severity) of language endangerment.
+-   Model B: Predict the probability of language endangerment. With Model B, the plan is to predict the probability of an endangered language evolving up from one classification all the way to finally becoming extinct. A Bayesian ordinal logistic regression model is built to understand the orderly nature of moving across the degrees (or severity) of language endangerment.
 
 
 ```{r}
