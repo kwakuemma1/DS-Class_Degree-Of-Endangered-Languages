@@ -9,10 +9,10 @@ execute:
 
 ## Introduction
 
-To quantify and ascertain whether social and economic factors affect  the degree of language endangerment, two Bayesian linear models were built:
+To quantify and ascertain whether social and economic factors affect the degree of language endangerment, two Bayesian linear models were built:
 
-- Model A: Predict the degree of language endangerment
-- Model B: Predict the probability of language endangerment. With Model B, the plan is to predict the probability of an endangered language evolving from one classification to the order.
+-   Model A: Predict the degree of language endangerment
+-   Model B: Predict the probability of language endangerment. With Model B, the plan is to predict the probability of an endangered language evolving from one classification to the order.
 
 ```{r}
 DiagrammeR::grViz("
@@ -30,18 +30,14 @@ digraph {
 ")
 ```
 
-
 The social and economic factors explored are:
 
-- literacy: Literacy Rate of the Country
-- infant_mortality: Infant Mortality Rate of the Country
-- agriculture: Percentage of GDP that is made up of Agriculture
-- proximity_to_capital_city: How close is the region in which the language is spoken to the capital city
-- minority_ed_policy: Does the country have any policies to foster education in minority languages
-- urban_pop_pc_change_1960_2017: Urban Population change between 1960 to 1970
-
-
-
+-   literacy: Literacy Rate of the Country
+-   infant_mortality: Infant Mortality Rate of the Country
+-   agriculture: Percentage of GDP that is made up of Agriculture
+-   proximity_to_capital_city: How close is the region in which the language is spoken to the capital city
+-   minority_ed_policy: Does the country have any policies to foster education in minority languages
+-   urban_pop_pc_change_1960_2017: Urban Population change between 1960 to 1970
 
 ```{r}
 library(tidyverse) # for data manipulation
@@ -53,14 +49,11 @@ library(brms)
 library(gt)
 ```
 
-
 ```{r}
 # source('data_01_clean_languages_final.R')
 # Below are the output if you run the line above
 combined_data <- readRDS("combined_data.Rds")
 ```
-
-
 
 ```{r}
 covariates <- c(
@@ -73,7 +66,6 @@ covariates <- c(
 )
 ```
 
-
 ## Model A: Predict Numeric Degree of Endangerment
 
 $$
@@ -85,13 +77,11 @@ $$
 \end{aligned}
 $$
 
-
-
 ```{r}
 model_numeric <- readRDS("model_numeric.Rds")
 ```
-### Assessing Model
 
+### Assessing Model
 
 ```{r}
 as.data.frame(posterior_summary(model_numeric)) |> 
@@ -125,20 +115,15 @@ $$
 \end{aligned}
 $$
 
-
-
-
 ```{r}
 plot(model_numeric, "areas", regex_pars = c('literacy', 'agriculture'),
      prob = 0.5, prob_outer = 0.9)
 ```
 
-
 ```{r}
 plot(model_numeric, "areas", regex_pars = c('infant_mortality','net_migration'),
      prob = 0.5, prob_outer = 0.9)
 ```
-
 
 ```{r}
 plot(model_numeric, "areas", 
@@ -150,10 +135,9 @@ plot(model_numeric, "areas",
 
 Urbanization increases the odds of language endangerment.
 
-- When an endangered language is close to an urban center it's more likely to go extinct
-- As migration to urban centers increase, languages become increasingly endangered
-- Other social and economic factors do seem to impact degree of endangerment when urbanization is considered
-
+-   When an endangered language is close to an urban center it's more likely to go extinct
+-   As migration to urban centers increase, languages become increasingly endangered
+-   Other social and economic factors do seem to impact degree of endangerment when urbanization is considered
 
 ## Model B: Predict Probability of Degree of Endangerment
 
@@ -166,7 +150,6 @@ $$
 \end{aligned}
 $$
 
-
 $$
 \begin{aligned}
 \log\left[ \frac { P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) }{ 1 - P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) } \right] &= \alpha_{1} - \phi + \epsilon \\
@@ -176,13 +159,9 @@ $$
 \end{aligned}
 $$
 
-
-
-
 ```{r}
 model_factor <- readRDS("model_factor.Rds")
 ```
-
 
 ### Assessing Model
 
@@ -218,7 +197,6 @@ $$
 \end{aligned}
 $$
 
-
 $$
 \begin{aligned}
 \log\left[ \frac { P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) }{ 1 - P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) } \right] &= 1.013 - \hat{\phi}\\
@@ -228,21 +206,15 @@ $$
 \end{aligned}
 $$
 
-
-
-
 ```{r}
 plot(model_factor, "areas", regex_pars = c('literacy', 'agriculture'),
      prob = 0.5, prob_outer = 0.9)
 ```
 
-
 ```{r}
 plot(model_factor, "areas", regex_pars = c('infant_mortality','net_migration'),
      prob = 0.5, prob_outer = 0.9)
 ```
-
-
 
 ```{r}
 plot(model_factor, "areas", 
@@ -250,21 +222,16 @@ plot(model_factor, "areas",
      prob = 0.5, prob_outer = 0.9)
 ```
 
-
-
 ### Key Discoveries
 
 Urbanization increases the odds of language endangerment.
 
-- When an endangered language is close to an urban center it's more likely to go extinct
-- As migration to urban centers increase, languages become increasingly endangered
-- Other social and economic factors do seem to impact degree of endangerment when urbanization is considered
-
-
+-   When an endangered language is close to an urban center it's more likely to go extinct
+-   As migration to urban centers increase, languages become increasingly endangered
+-   Other social and economic factors do seem to impact degree of endangerment when urbanization is considered
 
 ## Conclusion
 
 To help preserve endangered languages, policy makers must introduce policies that make endangered regions more attractive to prevent migration of current speakers to urban regions.
 
 Also improving literacy rate and agricultural economic opportunities in these regions could help preserve the local population, and in turn preserve the local language.
-

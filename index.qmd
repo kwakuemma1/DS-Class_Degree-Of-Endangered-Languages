@@ -105,7 +105,7 @@ plot_geo(locations=country_doe_orig2$country_codes,
 
 
 
-The purpose of project is to explore some of the global factors affecting language endangerment in an attempt to find ways to help save endangered languages. Some factors affecting global language endangerment are explored. A Bayesian linear model was subsequently built to verify the significance of these factors, and predict the degree of language endangerment.
+The purpose of this project is to explore some of the global factors affecting language endangerment in an attempt to find ways to help save them. Some social and economic factors affecting global language endangerment are explored. A Bayesian linear model was subsequently built to verify the significance of these factors, and predict the degree of language endangerment.
 
 Table 1 below is the official UNESCO Language Endangerment Classification System.
 
