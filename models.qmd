@@ -11,8 +11,19 @@ execute:
 
 To quantify and ascertain whether social and economic factors affect the degree of language endangerment, two Bayesian linear models were built:
 
--   Model A: Predict the degree of language endangerment
--   Model B: Predict the probability of language endangerment. With Model B, the plan is to predict the probability of an endangered language evolving from one classification to the order.
+-   Model A: Predict the numeric degree of language endangerment. The categories of language endangerment are converted to numbers, and a Bayesian Gaussian linear regression model is used to predict the numeric target:
+
+```{r, eval=FALSE, echo=TRUE}
+- Vulnerable: 1
+- definitely endangered: 2
+- severely endangered: 3
+- critically endangered: 4
+- extinct: 5
+```
+  
+  
+-   Model B: Predict the probability of language endangerment. With Model B, the plan is to predict the probability of an endangered language evolving up from one classification all the way to finally becoming extinct. A Bayesian ordinal logistic regression model is built to understand the orderly nature of across the degrees (or severity) of language endangerment.
+
 
 ```{r}
 DiagrammeR::grViz("
@@ -35,9 +46,9 @@ The social and economic factors explored are:
 -   literacy: Literacy Rate of the Country
 -   infant_mortality: Infant Mortality Rate of the Country
 -   agriculture: Percentage of GDP that is made up of Agriculture
--   proximity_to_capital_city: How close is the region in which the language is spoken to the capital city
--   minority_ed_policy: Does the country have any policies to foster education in minority languages
--   urban_pop_pc_change_1960_2017: Urban Population change between 1960 to 1970
+-   proximity_to_capital_city: How close is the region in which the language is spoken to the capital city?
+-   minority_ed_policy: Does the country have any policies to foster education in minority languages?
+-   urban_pop_pc_change_1960_2017: Urban population change between 1960 to 1970
 
 ```{r}
 library(tidyverse) # for data manipulation
@@ -89,6 +100,7 @@ as.data.frame(posterior_summary(model_numeric)) |>
   dplyr::select(-any_of(c("Est.Error"))) |>
   set_names(c("Term", "Median", "Lower Limit", "Upper Limit")) |>
   dplyr::filter(Term != 'sigma') |>
+  mutate(Term = broom.mixed::tidy(model_numeric)$term) |>
   mutate(
     `Is Significant?` = case_when(
       `Lower Limit` < 0 & `Upper Limit` > 0 ~ "No",
@@ -108,9 +120,9 @@ as.data.frame(posterior_summary(model_numeric)) |>
 
 $$
 \begin{aligned}
-\operatorname{\widehat{degree\_of\_endangerment\_numeric}} &= 0.595 + 0.689(\operatorname{literacy})\\
-&\quad + 0.025(\operatorname{infant\_mortality}) - 2.292(\operatorname{agriculture})\\
-&\quad + 0.388(\operatorname{proximity\_to\_capital\_city}) + 0.446(\operatorname{minority\_ed\_policy})\\
+\operatorname{\widehat{degree\_of\_endangerment\_numeric}} &= 0.595 + 0.678(\operatorname{literacy})\\
+&\quad + 0.025(\operatorname{infant\_mortality}) - 2.300(\operatorname{agriculture})\\
+&\quad + 0.388(\operatorname{proximity\_to\_capital\_city}) + 0.441(\operatorname{minority\_ed\_policy})\\
 &\quad + 0.023(\operatorname{urban\_pop\_pc\_change\_1960\_2017})
 \end{aligned}
 $$
@@ -133,11 +145,11 @@ plot(model_numeric, "areas",
 
 ### Key Discoveries
 
-Urbanization increases the odds of language endangerment.
+Urbanization further endangers languages.
 
 -   When an endangered language is close to an urban center it's more likely to go extinct
 -   As migration to urban centers increase, languages become increasingly endangered
--   Other social and economic factors do seem to impact degree of endangerment when urbanization is considered
+-   Other social and economic factors do not seem to impact degree of endangerment when urbanization is considered
 
 ## Model B: Predict Probability of Degree of Endangerment
 
@@ -171,6 +183,7 @@ as.data.frame(posterior_summary(model_factor)) |>
   dplyr::select(-any_of(c("Est.Error"))) |>
   set_names(c("Term", "Median", "Lower Limit", "Upper Limit")) |>
   dplyr::filter(Term != 'sigma') |>
+  mutate(Term = broom.mixed::tidy(model_factor)$term) |>
   mutate(
     `Is Significant?` = case_when(
       `Lower Limit` < 0 & `Upper Limit` > 0 ~ "No",
@@ -190,19 +203,19 @@ as.data.frame(posterior_summary(model_factor)) |>
 
 $$
 \begin{aligned}
-\operatorname{\hat{\phi}} &=0.805(\operatorname{literacy})\\
-&\quad + 0.307(\operatorname{infant\_mortality}) - 3.176(\operatorname{agriculture})\\
-&\quad + 0.433(\operatorname{proximity\_to\_capital\_city}) + 0.681(\operatorname{minority\_ed\_policy})\\
+\operatorname{\hat{\phi}} &=0.816(\operatorname{literacy})\\
+&\quad + 0.031(\operatorname{infant\_mortality}) - 3.189(\operatorname{agriculture})\\
+&\quad + 0.433(\operatorname{proximity\_to\_capital\_city}) + 0.683(\operatorname{minority\_ed\_policy})\\
 &\quad + 0.031(\operatorname{urban\_pop\_pc\_change\_1960\_2017})
 \end{aligned}
 $$
 
 $$
 \begin{aligned}
-\log\left[ \frac { P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) }{ 1 - P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) } \right] &= 1.013 - \hat{\phi}\\
-\log\left[ \frac { P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) }{ 1 - P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) } \right] &= 2.542 - \hat{\phi} \\
-\log\left[ \frac { P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) }{ 1 - P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) } \right] &= 4.039 - \hat{\phi} \\
-\log\left[ \frac { P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) }{ 1 - P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) } \right] &= 6.065 - \hat{\phi}
+\log\left[ \frac { P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) }{ 1 - P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) } \right] &= 1.009 - \hat{\phi}\\
+\log\left[ \frac { P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) }{ 1 - P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) } \right] &= 2.551 - \hat{\phi} \\
+\log\left[ \frac { P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) }{ 1 - P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) } \right] &= 4.037 - \hat{\phi} \\
+\log\left[ \frac { P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) }{ 1 - P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) } \right] &= 6.109 - \hat{\phi}
 \end{aligned}
 $$
 
@@ -228,10 +241,21 @@ Urbanization increases the odds of language endangerment.
 
 -   When an endangered language is close to an urban center it's more likely to go extinct
 -   As migration to urban centers increase, languages become increasingly endangered
--   Other social and economic factors do seem to impact degree of endangerment when urbanization is considered
+-   Other social and economic factors do not seem to impact degree of endangerment when urbanization is considered
+
+
+The following movements in the severity of language endangerment are also very significant:  
+
+- A language that is classified as **definitely endangered** is at a significant risk of becoming **severely endangered**
+- A language that is classified as **severely endangered** is at a significant risk of becoming **critically endangered**
+- A language that is classified as **critically endangered** is at a high significant risk of becoming **extinct**
+
 
 ## Conclusion
 
 To help preserve endangered languages, policy makers must introduce policies that make endangered regions more attractive to prevent migration of current speakers to urban regions.
 
 Also improving literacy rate and agricultural economic opportunities in these regions could help preserve the local population, and in turn preserve the local language.
+
+Languages that are already classified as *definitely endangered* are at significant risk of going extinct. Urgent attention should be given to such languages.
+

@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -147,13 +181,22 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>To quantify and ascertain whether social and economic factors affect the degree of language endangerment, two Bayesian linear models were built:</p>
 <ul>
-<li>Model A: Predict the degree of language endangerment</li>
-<li>Model B: Predict the probability of language endangerment. With Model B, the plan is to predict the probability of an endangered language evolving from one classification to the order.</li>
+<li>Model A: Predict the numeric degree of language endangerment. The categories of language endangerment are converted to numbers, and a Bayesian Gaussian linear regression model is used to predict the numeric target:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> Vulnerable<span class="sc">:</span> <span class="dv">1</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> definitely endangered<span class="sc">:</span> <span class="dv">2</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> severely endangered<span class="sc">:</span> <span class="dv">3</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> critically endangered<span class="sc">:</span> <span class="dv">4</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> extinct<span class="sc">:</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Model B: Predict the probability of language endangerment. With Model B, the plan is to predict the probability of an endangered language evolving up from one classification all the way to finally becoming extinct. A Bayesian ordinal logistic regression model is built to understand the orderly nature of across the degrees (or severity) of language endangerment.</li>
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-6de1bf633bd4910924d0" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-6de1bf633bd4910924d0">{"x":{"diagram":"\ndigraph {\n  graph []\n  node []\n    vulnerable\n    definitely_endangered\n    severely_endangered\n    critically_endangered\n    extinct\n  edge []\n    vulnerable->definitely_endangered->severely_endangered->critically_endangered->extinct\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-36b20d81ee58ea2a45d0" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-36b20d81ee58ea2a45d0">{"x":{"diagram":"\ndigraph {\n  graph []\n  node []\n    vulnerable\n    definitely_endangered\n    severely_endangered\n    critically_endangered\n    extinct\n  edge []\n    vulnerable->definitely_endangered->severely_endangered->critically_endangered->extinct\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>The social and economic factors explored are:</p>
@@ -161,9 +204,9 @@ ul.task-list li input[type="checkbox"] {
 <li>literacy: Literacy Rate of the Country</li>
 <li>infant_mortality: Infant Mortality Rate of the Country</li>
 <li>agriculture: Percentage of GDP that is made up of Agriculture</li>
-<li>proximity_to_capital_city: How close is the region in which the language is spoken to the capital city</li>
-<li>minority_ed_policy: Does the country have any policies to foster education in minority languages</li>
-<li>urban_pop_pc_change_1960_2017: Urban Population change between 1960 to 1970</li>
+<li>proximity_to_capital_city: How close is the region in which the language is spoken to the capital city?</li>
+<li>minority_ed_policy: Does the country have any policies to foster education in minority languages?</li>
+<li>urban_pop_pc_change_1960_2017: Urban population change between 1960 to 1970</li>
 </ul>
 </section>
 <section id="model-a-predict-numeric-degree-of-endangerment" class="level2">
@@ -181,23 +224,23 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 <div class="cell-output-display">
 
-<div id="axdckroaho" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#axdckroaho table {
+<div id="wztvjsejfk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wztvjsejfk table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#axdckroaho thead, #axdckroaho tbody, #axdckroaho tfoot, #axdckroaho tr, #axdckroaho td, #axdckroaho th {
+#wztvjsejfk thead, #wztvjsejfk tbody, #wztvjsejfk tfoot, #wztvjsejfk tr, #wztvjsejfk td, #wztvjsejfk th {
   border-style: none;
 }
 
-#axdckroaho p {
+#wztvjsejfk p {
   margin: 0;
   padding: 0;
 }
 
-#axdckroaho .gt_table {
+#wztvjsejfk .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -223,12 +266,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#axdckroaho .gt_caption {
+#wztvjsejfk .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#axdckroaho .gt_title {
+#wztvjsejfk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -240,7 +283,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#axdckroaho .gt_subtitle {
+#wztvjsejfk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -252,7 +295,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#axdckroaho .gt_heading {
+#wztvjsejfk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -264,13 +307,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#axdckroaho .gt_bottom_border {
+#wztvjsejfk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#axdckroaho .gt_col_headings {
+#wztvjsejfk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -285,7 +328,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#axdckroaho .gt_col_heading {
+#wztvjsejfk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -305,7 +348,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#axdckroaho .gt_column_spanner_outer {
+#wztvjsejfk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -317,15 +360,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#axdckroaho .gt_column_spanner_outer:first-child {
+#wztvjsejfk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#axdckroaho .gt_column_spanner_outer:last-child {
+#wztvjsejfk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#axdckroaho .gt_column_spanner {
+#wztvjsejfk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -337,11 +380,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#axdckroaho .gt_spanner_row {
+#wztvjsejfk .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#axdckroaho .gt_group_heading {
+#wztvjsejfk .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -367,7 +410,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#axdckroaho .gt_empty_group_heading {
+#wztvjsejfk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -382,15 +425,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#axdckroaho .gt_from_md > :first-child {
+#wztvjsejfk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#axdckroaho .gt_from_md > :last-child {
+#wztvjsejfk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#axdckroaho .gt_row {
+#wztvjsejfk .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -409,7 +452,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#axdckroaho .gt_stub {
+#wztvjsejfk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -422,7 +465,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#axdckroaho .gt_stub_row_group {
+#wztvjsejfk .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -436,15 +479,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#axdckroaho .gt_row_group_first td {
+#wztvjsejfk .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#axdckroaho .gt_row_group_first th {
+#wztvjsejfk .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#axdckroaho .gt_summary_row {
+#wztvjsejfk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -454,16 +497,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#axdckroaho .gt_first_summary_row {
+#wztvjsejfk .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#axdckroaho .gt_first_summary_row.thick {
+#wztvjsejfk .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#axdckroaho .gt_last_summary_row {
+#wztvjsejfk .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -473,7 +516,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#axdckroaho .gt_grand_summary_row {
+#wztvjsejfk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -483,7 +526,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#axdckroaho .gt_first_grand_summary_row {
+#wztvjsejfk .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -493,7 +536,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#axdckroaho .gt_last_grand_summary_row_top {
+#wztvjsejfk .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -503,11 +546,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#axdckroaho .gt_striped {
+#wztvjsejfk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#axdckroaho .gt_table_body {
+#wztvjsejfk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -516,7 +559,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#axdckroaho .gt_footnotes {
+#wztvjsejfk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -530,7 +573,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#axdckroaho .gt_footnote {
+#wztvjsejfk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -539,7 +582,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#axdckroaho .gt_sourcenotes {
+#wztvjsejfk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -553,7 +596,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#axdckroaho .gt_sourcenote {
+#wztvjsejfk .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -561,63 +604,63 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#axdckroaho .gt_left {
+#wztvjsejfk .gt_left {
   text-align: left;
 }
 
-#axdckroaho .gt_center {
+#wztvjsejfk .gt_center {
   text-align: center;
 }
 
-#axdckroaho .gt_right {
+#wztvjsejfk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#axdckroaho .gt_font_normal {
+#wztvjsejfk .gt_font_normal {
   font-weight: normal;
 }
 
-#axdckroaho .gt_font_bold {
+#wztvjsejfk .gt_font_bold {
   font-weight: bold;
 }
 
-#axdckroaho .gt_font_italic {
+#wztvjsejfk .gt_font_italic {
   font-style: italic;
 }
 
-#axdckroaho .gt_super {
+#wztvjsejfk .gt_super {
   font-size: 65%;
 }
 
-#axdckroaho .gt_footnote_marks {
+#wztvjsejfk .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#axdckroaho .gt_asterisk {
+#wztvjsejfk .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#axdckroaho .gt_indent_1 {
+#wztvjsejfk .gt_indent_1 {
   text-indent: 5px;
 }
 
-#axdckroaho .gt_indent_2 {
+#wztvjsejfk .gt_indent_2 {
   text-indent: 10px;
 }
 
-#axdckroaho .gt_indent_3 {
+#wztvjsejfk .gt_indent_3 {
   text-indent: 15px;
 }
 
-#axdckroaho .gt_indent_4 {
+#wztvjsejfk .gt_indent_4 {
   text-indent: 20px;
 }
 
-#axdckroaho .gt_indent_5 {
+#wztvjsejfk .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -677,17 +720,12 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p><span class="math display">\[
 \begin{aligned}
-\operatorname{\widehat{degree\_of\_endangerment\_numeric}} &amp;= 0.595 + 0.689(\operatorname{literacy})\\
-&amp;\quad + 0.025(\operatorname{infant\_mortality}) - 2.292(\operatorname{agriculture})\\
-&amp;\quad + 0.388(\operatorname{proximity\_to\_capital\_city}) + 0.446(\operatorname{minority\_ed\_policy})\\
+\operatorname{\widehat{degree\_of\_endangerment\_numeric}} &amp;= 0.595 + 0.678(\operatorname{literacy})\\
+&amp;\quad + 0.025(\operatorname{infant\_mortality}) - 2.300(\operatorname{agriculture})\\
+&amp;\quad + 0.388(\operatorname{proximity\_to\_capital\_city}) + 0.441(\operatorname{minority\_ed\_policy})\\
 &amp;\quad + 0.023(\operatorname{urban\_pop\_pc\_change\_1960\_2017})
 \end{aligned}
 \]</span></p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="models_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="models_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
@@ -698,14 +736,19 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="models_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="models_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 <section id="key-discoveries" class="level3">
 <h3 class="anchored" data-anchor-id="key-discoveries">Key Discoveries</h3>
-<p>Urbanization increases the odds of language endangerment.</p>
+<p>Urbanization further endangers languages.</p>
 <ul>
 <li>When an endangered language is close to an urban center it’s more likely to go extinct</li>
 <li>As migration to urban centers increase, languages become increasingly endangered</li>
-<li>Other social and economic factors do seem to impact degree of endangerment when urbanization is considered</li>
+<li>Other social and economic factors do not seem to impact degree of endangerment when urbanization is considered</li>
 </ul>
 </section>
 </section>
@@ -732,23 +775,23 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 <div class="cell-output-display">
 
-<div id="qlanqfjecy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qlanqfjecy table {
+<div id="seapqpkrkz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#seapqpkrkz table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qlanqfjecy thead, #qlanqfjecy tbody, #qlanqfjecy tfoot, #qlanqfjecy tr, #qlanqfjecy td, #qlanqfjecy th {
+#seapqpkrkz thead, #seapqpkrkz tbody, #seapqpkrkz tfoot, #seapqpkrkz tr, #seapqpkrkz td, #seapqpkrkz th {
   border-style: none;
 }
 
-#qlanqfjecy p {
+#seapqpkrkz p {
   margin: 0;
   padding: 0;
 }
 
-#qlanqfjecy .gt_table {
+#seapqpkrkz .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -774,12 +817,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#qlanqfjecy .gt_caption {
+#seapqpkrkz .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qlanqfjecy .gt_title {
+#seapqpkrkz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -791,7 +834,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#qlanqfjecy .gt_subtitle {
+#seapqpkrkz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -803,7 +846,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#qlanqfjecy .gt_heading {
+#seapqpkrkz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -815,13 +858,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#qlanqfjecy .gt_bottom_border {
+#seapqpkrkz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qlanqfjecy .gt_col_headings {
+#seapqpkrkz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -836,7 +879,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#qlanqfjecy .gt_col_heading {
+#seapqpkrkz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -856,7 +899,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#qlanqfjecy .gt_column_spanner_outer {
+#seapqpkrkz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -868,15 +911,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#qlanqfjecy .gt_column_spanner_outer:first-child {
+#seapqpkrkz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qlanqfjecy .gt_column_spanner_outer:last-child {
+#seapqpkrkz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qlanqfjecy .gt_column_spanner {
+#seapqpkrkz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -888,11 +931,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#qlanqfjecy .gt_spanner_row {
+#seapqpkrkz .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qlanqfjecy .gt_group_heading {
+#seapqpkrkz .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -918,7 +961,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#qlanqfjecy .gt_empty_group_heading {
+#seapqpkrkz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -933,15 +976,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#qlanqfjecy .gt_from_md > :first-child {
+#seapqpkrkz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qlanqfjecy .gt_from_md > :last-child {
+#seapqpkrkz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qlanqfjecy .gt_row {
+#seapqpkrkz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -960,7 +1003,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#qlanqfjecy .gt_stub {
+#seapqpkrkz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -973,7 +1016,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#qlanqfjecy .gt_stub_row_group {
+#seapqpkrkz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -987,15 +1030,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#qlanqfjecy .gt_row_group_first td {
+#seapqpkrkz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qlanqfjecy .gt_row_group_first th {
+#seapqpkrkz .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qlanqfjecy .gt_summary_row {
+#seapqpkrkz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1005,16 +1048,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#qlanqfjecy .gt_first_summary_row {
+#seapqpkrkz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qlanqfjecy .gt_first_summary_row.thick {
+#seapqpkrkz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qlanqfjecy .gt_last_summary_row {
+#seapqpkrkz .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1024,7 +1067,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#qlanqfjecy .gt_grand_summary_row {
+#seapqpkrkz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1034,7 +1077,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#qlanqfjecy .gt_first_grand_summary_row {
+#seapqpkrkz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1044,7 +1087,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#qlanqfjecy .gt_last_grand_summary_row_top {
+#seapqpkrkz .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1054,11 +1097,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#qlanqfjecy .gt_striped {
+#seapqpkrkz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qlanqfjecy .gt_table_body {
+#seapqpkrkz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1067,7 +1110,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#qlanqfjecy .gt_footnotes {
+#seapqpkrkz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1081,7 +1124,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#qlanqfjecy .gt_footnote {
+#seapqpkrkz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1090,7 +1133,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#qlanqfjecy .gt_sourcenotes {
+#seapqpkrkz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1104,7 +1147,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#qlanqfjecy .gt_sourcenote {
+#seapqpkrkz .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1112,63 +1155,63 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#qlanqfjecy .gt_left {
+#seapqpkrkz .gt_left {
   text-align: left;
 }
 
-#qlanqfjecy .gt_center {
+#seapqpkrkz .gt_center {
   text-align: center;
 }
 
-#qlanqfjecy .gt_right {
+#seapqpkrkz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qlanqfjecy .gt_font_normal {
+#seapqpkrkz .gt_font_normal {
   font-weight: normal;
 }
 
-#qlanqfjecy .gt_font_bold {
+#seapqpkrkz .gt_font_bold {
   font-weight: bold;
 }
 
-#qlanqfjecy .gt_font_italic {
+#seapqpkrkz .gt_font_italic {
   font-style: italic;
 }
 
-#qlanqfjecy .gt_super {
+#seapqpkrkz .gt_super {
   font-size: 65%;
 }
 
-#qlanqfjecy .gt_footnote_marks {
+#seapqpkrkz .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qlanqfjecy .gt_asterisk {
+#seapqpkrkz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qlanqfjecy .gt_indent_1 {
+#seapqpkrkz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qlanqfjecy .gt_indent_2 {
+#seapqpkrkz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qlanqfjecy .gt_indent_3 {
+#seapqpkrkz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qlanqfjecy .gt_indent_4 {
+#seapqpkrkz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qlanqfjecy .gt_indent_5 {
+#seapqpkrkz .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1243,25 +1286,20 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p><span class="math display">\[
 \begin{aligned}
-\operatorname{\hat{\phi}} &amp;=0.805(\operatorname{literacy})\\
-&amp;\quad + 0.307(\operatorname{infant\_mortality}) - 3.176(\operatorname{agriculture})\\
-&amp;\quad + 0.433(\operatorname{proximity\_to\_capital\_city}) + 0.681(\operatorname{minority\_ed\_policy})\\
+\operatorname{\hat{\phi}} &amp;=0.816(\operatorname{literacy})\\
+&amp;\quad + 0.031(\operatorname{infant\_mortality}) - 3.189(\operatorname{agriculture})\\
+&amp;\quad + 0.433(\operatorname{proximity\_to\_capital\_city}) + 0.683(\operatorname{minority\_ed\_policy})\\
 &amp;\quad + 0.031(\operatorname{urban\_pop\_pc\_change\_1960\_2017})
 \end{aligned}
 \]</span></p>
 <p><span class="math display">\[
 \begin{aligned}
-\log\left[ \frac { P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) }{ 1 - P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) } \right] &amp;= 1.013 - \hat{\phi}\\
-\log\left[ \frac { P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) }{ 1 - P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) } \right] &amp;= 2.542 - \hat{\phi} \\
-\log\left[ \frac { P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) }{ 1 - P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) } \right] &amp;= 4.039 - \hat{\phi} \\
-\log\left[ \frac { P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) }{ 1 - P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) } \right] &amp;= 6.065 - \hat{\phi}
+\log\left[ \frac { P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) }{ 1 - P( \operatorname{vulnerable} \geq \operatorname{definitely\ endangered} ) } \right] &amp;= 1.009 - \hat{\phi}\\
+\log\left[ \frac { P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) }{ 1 - P( \operatorname{definitely\ endangered} \geq \operatorname{severely\ endangered} ) } \right] &amp;= 2.551 - \hat{\phi} \\
+\log\left[ \frac { P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) }{ 1 - P( \operatorname{severely\ endangered} \geq \operatorname{critically\ endangered} ) } \right] &amp;= 4.037 - \hat{\phi} \\
+\log\left[ \frac { P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) }{ 1 - P( \operatorname{critically\ endangered} \geq \operatorname{extinct} ) } \right] &amp;= 6.109 - \hat{\phi}
 \end{aligned}
 \]</span></p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="models_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="models_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
@@ -1272,6 +1310,11 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="models_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="models_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 <section id="key-discoveries-1" class="level3">
 <h3 class="anchored" data-anchor-id="key-discoveries-1">Key Discoveries</h3>
@@ -1279,7 +1322,13 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>When an endangered language is close to an urban center it’s more likely to go extinct</li>
 <li>As migration to urban centers increase, languages become increasingly endangered</li>
-<li>Other social and economic factors do seem to impact degree of endangerment when urbanization is considered</li>
+<li>Other social and economic factors do not seem to impact degree of endangerment when urbanization is considered</li>
+</ul>
+<p>The following movements in the severity of language endangerment are also very significant:</p>
+<ul>
+<li>A language that is classified as <strong>definitely endangered</strong> is at a significant risk of becoming <strong>severely endangered</strong></li>
+<li>A language that is classified as <strong>severely endangered</strong> is at a significant risk of becoming <strong>critically endangered</strong></li>
+<li>A language that is classified as <strong>critically endangered</strong> is at a high significant risk of becoming <strong>extinct</strong></li>
 </ul>
 </section>
 </section>
@@ -1287,6 +1336,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 <p>To help preserve endangered languages, policy makers must introduce policies that make endangered regions more attractive to prevent migration of current speakers to urban regions.</p>
 <p>Also improving literacy rate and agricultural economic opportunities in these regions could help preserve the local population, and in turn preserve the local language.</p>
+<p>Languages that are already classified as <em>definitely endangered</em> are at significant risk of going extinct. Urgent attention should be given to such languages.</p>
 
 
 </section>

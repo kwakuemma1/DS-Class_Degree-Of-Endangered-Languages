@@ -12,5 +12,7 @@ title: "Sources"
   - [The Quarto Guide](https://quarto.org/docs/guide/)
   - [Briggs, Saga. “Endangered Languages: What Are They & How to Save Them.”](https://www.berlitz.com/blog/endangered-languages)
   - [Endangered Languages Project](https://www.endangeredlanguages.com/#/3/28.506/-95.790/0/100000/0/low/mid/high/dormant)
-  - [Kaggle](https://www.kaggle.com/code/xhoong/languages-extinction-level-to-representing-country/report)
+  - [Kaggle EDA](https://www.kaggle.com/code/xhoong/languages-extinction-level-to-representing-country/report)
+  - [Ordinal Logistic Regression in R](https://stats.oarc.ucla.edu/r/dae/ordinal-logistic-regression/)
+  - [How do I interpret the coefficients in an ordinal logistic regression in R?](https://stats.oarc.ucla.edu/r/faq/ologit-coefficients/)
  
