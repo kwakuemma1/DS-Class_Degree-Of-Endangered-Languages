@@ -291,7 +291,7 @@ combined_data |>
 ```
 
 
-The most literate countries seem to have a higher proportion definitely endangered languages compared to the bottom 10 % (or least literate countries)
+The most literate countries seem to have a higher proportion of definitely endangered languages compared to the bottom 10% (or least literate countries)
 
 ### By Minority Education Policy
 ```{r}
